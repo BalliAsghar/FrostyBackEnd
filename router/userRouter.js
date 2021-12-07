@@ -4,6 +4,7 @@ const {
   postUser,
   getUser,
   patchUser,
+  deleteUser,
 } = require("../controllers/userController");
 
 userRouter // GET - /api/user
@@ -11,6 +12,6 @@ userRouter // GET - /api/user
   .get(getUsers)
   .post(postUser);
 
-userRouter.route("/:user_id").get(getUser).patch(patchUser);
+userRouter.route("/:user_id").get(getUser).patch(patchUser).delete(deleteUser);
 
 module.exports = userRouter;

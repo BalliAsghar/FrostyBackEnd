@@ -3,6 +3,7 @@ const {
   insertUser,
   fetchUser,
   updateUser,
+  removeUser,
 } = require("../models/userModel.js");
 
 exports.getUsers = async (req, res) => {
@@ -38,6 +39,16 @@ exports.patchUser = async (req, res) => {
   const { body } = req;
   try {
     const response = await updateUser(user_id, body);
+    console.log(response);
+  } catch {
+    console.log("error in controller");
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const response = await removeUser(user_id);
     console.log(response);
   } catch {
     console.log("error in controller");

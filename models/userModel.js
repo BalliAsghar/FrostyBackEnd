@@ -37,3 +37,13 @@ exports.updateUser = async (id, body) => {
     console.log("error in model");
   }
 };
+
+exports.removeUser = async (id) => {
+  try {
+    const user = await User.findById(id);
+    const deletedUser = await User.findByIdAndDelete(id);
+    return deletedUser;
+  } catch {
+    console.log("not found");
+  }
+};
