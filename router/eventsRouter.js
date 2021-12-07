@@ -22,6 +22,14 @@ const {
 
 eventsRouter.route("/").get(getEvents).post(postEvent);
 
+/**
+ * @Method GET
+ * @Route /api/events/:id
+ * @Function getEvent
+ * @Description Get a single event
+ * @Param {String} id
+ */
+
 eventsRouter.route("/:event_id").get(getEvent).delete(deleteEvent);
 
 module.exports = eventsRouter;
