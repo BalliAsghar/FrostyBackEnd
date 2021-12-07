@@ -1,7 +1,7 @@
-const { fetchUser, insertUser } = require("../models/userModel.js");
+const { fetchUsers, insertUser, fetchUser } = require("../models/userModel.js");
 
 exports.getUsers = (req, res) => {
-  fetchUser();
+  fetchUsers();
 };
 
 exports.postUser = async (req, res) => {
@@ -10,5 +10,15 @@ exports.postUser = async (req, res) => {
     const reponse = await insertUser(body);
   } catch {
     console.log("failed");
+  }
+};
+
+exports.getUser = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const response = await fetchUser(user_id);
+    console.log(response);
+  } catch {
+    console.log("error in controller");
   }
 };
