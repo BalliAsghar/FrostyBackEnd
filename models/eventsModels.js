@@ -27,3 +27,13 @@ exports.fetchEvent = async (id) => {
     console.log(err);
   }
 };
+
+exports.removeEvent = async (id) => {
+  try {
+    const event = await Event.findById(id);
+    const deletedEvent = await Event.findByIdAndDelete(id);
+    return deletedEvent;
+  } catch (err) {
+    console.log(err);
+  }
+};

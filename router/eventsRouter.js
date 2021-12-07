@@ -3,6 +3,7 @@ const {
   getEvents,
   postEvent,
   getEvent,
+  deleteEvent,
 } = require("../controllers/eventsController");
 
 eventsRouter // GET - /api/events
@@ -10,6 +11,6 @@ eventsRouter // GET - /api/events
   .get(getEvents)
   .post(postEvent);
 
-eventsRouter.route("/:event_id").get(getEvent);
+eventsRouter.route("/:event_id").get(getEvent).delete(deleteEvent);
 
 module.exports = eventsRouter;
