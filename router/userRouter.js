@@ -14,6 +14,7 @@ const { handleWrongMethods } = require("../errors/endpoint-errors");
  * @Function getUsers()
  * @Description Get all users
  */
+userRouter.get("/", getUsers);
 
 /**
  * @Method POST
@@ -21,14 +22,7 @@ const { handleWrongMethods } = require("../errors/endpoint-errors");
  * @Function postUser()
  * @Description Create a new user
  */
-
-/**
- * @Route /api/WrontPath
- * @Method GET
- * @Function handleWrongMethods()
- * @Description Handle wrong methods
- */
-userRouter.route("/").get(getUsers).post(postUser).all(handleWrongMethods);
+userRouter.post("/", postUser);
 
 /**
  * @Route /api/users/:id
@@ -37,6 +31,7 @@ userRouter.route("/").get(getUsers).post(postUser).all(handleWrongMethods);
  * @Description Get a user by id
  * @Param id
  */
+userRouter.get("/:id", getUser);
 
 /**
  * @Method PATCH
@@ -45,6 +40,7 @@ userRouter.route("/").get(getUsers).post(postUser).all(handleWrongMethods);
  * @Description Update a user by id
  * @Param id
  */
+userRouter.patch("/:id", patchUser);
 
 /**
  * @Method DELETE
@@ -53,6 +49,14 @@ userRouter.route("/").get(getUsers).post(postUser).all(handleWrongMethods);
  * @Description Delete a user by id
  * @Param id
  */
-userRouter.route("/:user_id").get(getUser).patch(patchUser).delete(deleteUser);
+userRouter.delete("/:id", deleteUser);
+
+/**
+ * @Route /api/WrontPath
+ * @Method GET
+ * @Function handleWrongMethods()
+ * @Description Handle wrong methods
+ */
+userRouter.all("*", handleWrongMethods);
 
 module.exports = userRouter;
