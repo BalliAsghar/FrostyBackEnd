@@ -9,15 +9,15 @@ const {
 const { handleWrongMethods } = require("../errors/endpoint-errors");
 
 /**
- * @Route /api/users
  * @Method GET
+ * @Route /api/users
  * @Function getUsers()
  * @Description Get all users
  */
 
 /**
- * @Route /api/users
  * @Method POST
+ * @Route /api/users
  * @Function postUser()
  * @Description Create a new user
  */
@@ -35,6 +35,22 @@ userRouter.route("/").get(getUsers).post(postUser).all(handleWrongMethods);
  * @Method GET
  * @Function getUser()
  * @Description Get a user by id
+ * @Param id
+ */
+
+/**
+ * @Method PATCH
+ * @Route /api/users/:id
+ * @Function patchUser()
+ * @Description Update a user by id
+ * @Param id
+ */
+
+/**
+ * @Method DELETE
+ * @Route /api/users/:id
+ * @Function deleteUser()
+ * @Description Delete a user by id
  * @Param id
  */
 userRouter.route("/:user_id").get(getUser).patch(patchUser).delete(deleteUser);
