@@ -13,3 +13,12 @@ exports.insertEvent = async (body) => {
     console.log("error in model");
   }
 };
+
+exports.fetchEvent = async (id) => {
+  try {
+    const event = await Event.findById(id).populate("creatorId").exec();
+    return event;
+  } catch (err) {
+    console.log(err);
+  }
+};

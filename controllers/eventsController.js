@@ -1,4 +1,8 @@
-const { fetchEvents, insertEvent } = require("../models/eventsModels");
+const {
+  fetchEvents,
+  insertEvent,
+  fetchEvent,
+} = require("../models/eventsModels");
 exports.getEvents = (req, res) => {
   fetchEvents();
 };
@@ -10,5 +14,15 @@ exports.postEvent = async (req, res) => {
     console.log(response);
   } catch {
     console.log("error in controller");
+  }
+};
+
+exports.getEvent = async (req, res) => {
+  const { event_id } = req.params;
+  try {
+    const response = await fetchEvent(event_id);
+    console.log(response);
+  } catch {
+    console.log("error");
   }
 };
