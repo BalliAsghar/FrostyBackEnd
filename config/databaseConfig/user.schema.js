@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema({
-  username: { type: String, unique: true },
-  email: { type: String, unique: true },
-  displayName: { type: String },
-  dateOfBirth: { type: String },
+  username: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
+  displayName: { type: String, required: true },
+  dateOfBirth: { type: String, required: true },
   pronouns: { type: String },
   avatarUrl: { type: String },
-  dateJoined: { type: String, default: Date.now() },
-  followedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+  dateJoined: { type: String, default: Date.now },
+  followedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   followedCategories: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Categories" },
+    { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   ],
   postedPictures: [{ type: String }],
-  attendedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
-  hostedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
+  attendedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
+  hostedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
 });
 
-module.exports = User = mongoose.model("Users", UserSchema);
+module.exports = User = mongoose.model("User", UserSchema);

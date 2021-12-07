@@ -8,7 +8,7 @@ router.get("/", (req, res) => res.json({ message: "Api Router" }));
 
 router.use("/categories", categoriesRouter);
 router.use("/events", eventsRouter);
-router.use("/user", userRouter);
+router.use("/users", userRouter);
 router.use("/comments", commentsRouter);
 
 module.exports = router;
