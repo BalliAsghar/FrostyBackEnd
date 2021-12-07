@@ -1,4 +1,9 @@
-const { fetchUsers, insertUser, fetchUser } = require("../models/userModel.js");
+const {
+  fetchUsers,
+  insertUser,
+  fetchUser,
+  updateUser,
+} = require("../models/userModel.js");
 
 exports.getUsers = async (req, res) => {
   try {
@@ -22,6 +27,17 @@ exports.getUser = async (req, res) => {
   const { user_id } = req.params;
   try {
     const response = await fetchUser(user_id);
+    console.log(response);
+  } catch {
+    console.log("error in controller");
+  }
+};
+
+exports.patchUser = async (req, res) => {
+  const { user_id } = req.params;
+  const { body } = req;
+  try {
+    const response = await updateUser(user_id, body);
     console.log(response);
   } catch {
     console.log("error in controller");

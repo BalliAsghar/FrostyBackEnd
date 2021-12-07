@@ -27,3 +27,13 @@ exports.fetchUser = async (id) => {
     console.log("error in model");
   }
 };
+
+exports.updateUser = async (id, body) => {
+  try {
+    await User.findByIdAndUpdate(id, body);
+    const updatedUser = User.findById(id);
+    return updatedUser;
+  } catch {
+    console.log("error in model");
+  }
+};

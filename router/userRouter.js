@@ -3,6 +3,7 @@ const {
   getUsers,
   postUser,
   getUser,
+  patchUser,
 } = require("../controllers/userController");
 
 userRouter // GET - /api/user
@@ -10,6 +11,6 @@ userRouter // GET - /api/user
   .get(getUsers)
   .post(postUser);
 
-userRouter.route("/:user_id").get(getUser);
+userRouter.route("/:user_id").get(getUser).patch(patchUser);
 
 module.exports = userRouter;
