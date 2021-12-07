@@ -12,7 +12,7 @@ const {
  * @Function getEvents
  * @Description Get all events
  */
-
+eventsRouter.get("/", getEvents);
 /**
  * @Method POST
  * @Route /api/events
@@ -20,7 +20,7 @@ const {
  * @Description Create a new event
  */
 
-eventsRouter.route("/").get(getEvents).post(postEvent);
+eventsRouter.post("/", postEvent);
 
 /**
  * @Method GET
@@ -29,7 +29,16 @@ eventsRouter.route("/").get(getEvents).post(postEvent);
  * @Description Get a single event
  * @Param {String} id
  */
+eventsRouter.get("/:event_id", getEvent);
 
-eventsRouter.route("/:event_id").get(getEvent).delete(deleteEvent);
+/**
+ * @Method DELETE
+ * @Route /api/events/:id
+ * @Function deleteEvent
+ * @Description Delete a single event
+ * @Param {String} id
+ */
+
+eventsRouter.delete("/:event_id", deleteEvent);
 
 module.exports = eventsRouter;
