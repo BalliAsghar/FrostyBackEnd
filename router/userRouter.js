@@ -6,7 +6,6 @@ const {
   patchUser,
   deleteUser,
 } = require("../controllers/userController");
-const { handleWrongMethods } = require("../errors/endpoint-errors");
 
 /**
  * @Method GET
@@ -50,13 +49,5 @@ userRouter.patch("/:id", patchUser);
  * @Param id
  */
 userRouter.delete("/:id", deleteUser);
-
-/**
- * @Route /api/WrontPath
- * @Method GET
- * @Function handleWrongMethods()
- * @Description Handle wrong methods
- */
-// userRouter.all("*", handleWrongMethods);
 
 module.exports = userRouter;
