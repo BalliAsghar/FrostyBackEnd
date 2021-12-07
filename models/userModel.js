@@ -14,8 +14,8 @@ exports.insertUser = async (body) => {
     const postedUser = new User(body);
     const response = await postedUser.save();
     console.log(response);
-  } catch {
-    console.log("error");
+  } catch (err) {
+    console.log(err);
   }
 };
 

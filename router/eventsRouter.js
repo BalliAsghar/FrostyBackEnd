@@ -3,8 +3,7 @@ const { getEvents, postEvent } = require("../controllers/eventsController");
 
 eventsRouter // GET - /api/events
   .route("/")
-  .get(getEvents);
-
-eventsRouter.route("/").post(postEvent);
+  .get(getEvents)
+  .post(postEvent);
 
 module.exports = eventsRouter;
