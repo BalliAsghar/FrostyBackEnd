@@ -57,6 +57,6 @@ userRouter.delete("/:id", deleteUser);
  * @Function handleWrongMethods()
  * @Description Handle wrong methods
  */
-userRouter.all("*", handleWrongMethods);
+// userRouter.all("*", handleWrongMethods);
 
 module.exports = userRouter;

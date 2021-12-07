@@ -13,7 +13,4 @@ router.use("/events", eventsRouter);
 router.use("/users", userRouter);
 router.use("/comments", commentsRouter);
 
-// Error Handling for all routes that are not defined
-router.use("*", handleWrongUrls);
-
 module.exports = router;

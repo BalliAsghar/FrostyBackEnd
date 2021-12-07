@@ -19,6 +19,6 @@ categoriesRouter.get("/", getCategories);
  * @Description Handle wrong methods
  * @Function handleWrongMethods
  */
-categoriesRouter.route("*").all(handleWrongUrls);
+// categoriesRouter.route("*").all(handleWrongUrls);
 
 module.exports = categoriesRouter;

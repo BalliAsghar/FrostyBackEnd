@@ -19,6 +19,11 @@ app.get("/", (req, res) => res.json({ message: "Hello" }));
 
 app.use("/api", router);
 
+// Error Handling for all routes not found
+app.all("*", (req, res, next) => {
+  next({ statusCode: 404, message: "Route not found" });
+});
+
 // handle error middleware
 app.use(errors);
 
