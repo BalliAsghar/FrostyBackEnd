@@ -1,7 +1,12 @@
 const Event = require("../config/databaseConfig/event.schema.js");
 
-exports.fetchEvents = () => {
-  console.log("Fetch Events");
+exports.fetchEvents = async () => {
+  try {
+    const events = await Event.find({}).populate("creatorId").exec();
+    return events;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.insertEvent = async (body) => {

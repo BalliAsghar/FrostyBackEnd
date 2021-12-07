@@ -3,8 +3,13 @@ const {
   insertEvent,
   fetchEvent,
 } = require("../models/eventsModels");
-exports.getEvents = (req, res) => {
-  fetchEvents();
+exports.getEvents = async (req, res) => {
+  try {
+    const response = await fetchEvents();
+    console.log(response);
+  } catch {
+    console.log("error");
+  }
 };
 
 exports.postEvent = async (req, res) => {
