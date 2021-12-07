@@ -15,25 +15,33 @@ describe("/api/categories", () => {
           });
         });
     });
-    describe("POST", () => {
-      test("status:405 and returns error message if method is wrong", () => {
-        return request(app)
-          .post("/api/categories")
-          .expect(405)
-          .then((res) => {
-            expect(res.body.message).toEqual("Method not allowed");
-          });
-      });
+    test("status:404 and returns status code and a message", () => {
+      return request(app)
+        .get("/api/categories")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.message).toBe("No categories found");
+        });
     });
-    describe("GET", () => {
-      test("status:404 and returns error message if url is invalid", () => {
-        return request(app)
-          .get("/api/categories/wrongpath")
-          .expect(404)
-          .then((res) => {
-            expect(res.body.message).toEqual("Invalid Url");
-          });
-      });
+  });
+  describe("POST", () => {
+    test("status:405 and returns error message if method is wrong", () => {
+      return request(app)
+        .post("/api/categories")
+        .expect(405)
+        .then((res) => {
+          expect(res.body.message).toEqual("Method not allowed");
+        });
+    });
+  });
+  describe("GET", () => {
+    test("status:404 and returns error message if url is invalid", () => {
+      return request(app)
+        .get("/api/categories/wrongpath")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.message).toEqual("Invalid Url");
+        });
     });
   });
 });
