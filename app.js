@@ -19,8 +19,9 @@ app.get("/", (req, res) => res.json({ message: "Hello" }));
 
 app.use("/api", router);
 
-// handle error middle
+// handle error middleware
 app.use(errors);
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`));
