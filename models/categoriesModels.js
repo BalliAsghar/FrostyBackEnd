@@ -10,3 +10,14 @@ exports.fetchCategories = async () => {
     return Promise.reject(err);
   }
 };
+
+exports.fetchCategoryById = async (id) => {
+  try {
+    const category = await Category.findById(id);
+    if (category) return category;
+
+    return Promise.reject({ status: 404, message: "No category found" });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
