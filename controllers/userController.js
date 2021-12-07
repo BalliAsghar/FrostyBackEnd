@@ -8,8 +8,8 @@ const {
 
 exports.getUsers = async (req, res) => {
   try {
-    const response = await fetchUsers();
-    console.log(response);
+    const users = await fetchUsers();
+    res.status(200).send({ users });
   } catch {
     console.log("error");
   }
