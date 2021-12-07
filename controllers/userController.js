@@ -1,7 +1,12 @@
 const { fetchUsers, insertUser, fetchUser } = require("../models/userModel.js");
 
-exports.getUsers = (req, res) => {
-  fetchUsers();
+exports.getUsers = async (req, res) => {
+  try {
+    const response = await fetchUsers();
+    console.log(response);
+  } catch {
+    console.log("error");
+  }
 };
 
 exports.postUser = async (req, res) => {

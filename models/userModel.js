@@ -1,7 +1,12 @@
 const User = require("../config/databaseConfig/user.schema.js");
 
-exports.fetchUsers = () => {
-  console.log("Fetch User");
+exports.fetchUsers = async () => {
+  try {
+    const users = await User.find({});
+    return users;
+  } catch {
+    console.log("error in model");
+  }
 };
 
 exports.insertUser = async (body) => {
