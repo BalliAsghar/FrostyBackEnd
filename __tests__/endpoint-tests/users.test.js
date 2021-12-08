@@ -24,6 +24,8 @@ describe("/api/users", () => {
           });
         });
     });
+
+    //test("404 test pacecholder")
   });
   describe("DELETE", () => {
     test("status:405 and returns error message if method is wrong", () => {
