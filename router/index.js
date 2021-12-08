@@ -5,13 +5,12 @@ const userRouter = require("./userRouter");
 const commentsRouter = require("./commentsRouter");
 const { handleWrongUrls } = require("../errors/endpoint-errors");
 
+// Index Route for /api
 router.get("/", (req, res) => res.json({ message: "Api Router" }));
 
 router.use("/categories", categoriesRouter);
 router.use("/events", eventsRouter);
 router.use("/users", userRouter);
 router.use("/comments", commentsRouter);
-
-router.use("*", handleWrongUrls);
 
 module.exports = router;

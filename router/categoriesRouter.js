@@ -1,15 +1,25 @@
 const categoriesRouter = require("express").Router();
-const { getCategories } = require("../controllers/categoriesController");
 const {
-  handleWrongMethods,
-  handleWrongUrls,
-} = require("../errors/endpoint-errors");
+  getCategories,
+  getCategoryById,
+} = require("../controllers/categoriesController");
 
-categoriesRouter // GET - /api/categories
-  .route("/")
-  .get(getCategories)
-  .all(handleWrongMethods);
+/**
+ * @Method GET
+ * @Route /api/categories
+ * @Description Get all categories
+ * @Function getCategories
+ */
+categoriesRouter.get("/", getCategories);
 
-categoriesRouter.route("*").all(handleWrongUrls);
+/**
+ * @Method GET
+ * @Route /api/categories/:categoryId
+ * @Description Get a category by id
+ * @Function getCategoryById
+ * @Param {String} categoryId
+ */
+
+categoriesRouter.get("/:categoryId", getCategoryById);
 
 module.exports = categoriesRouter;

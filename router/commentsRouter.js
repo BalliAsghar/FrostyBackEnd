@@ -1,8 +1,11 @@
 const commentsRouter = require("express").Router();
 const { getComments } = require("../controllers/commentsController");
 
-commentsRouter // GET - /api/events
-  .route("/")
-  .get(getComments);
+/**
+ * @METHOD GET
+ * @ROUTE /api/comments
+ * @DESCRIPTION Get all comments
+ */
+commentsRouter.route("/").get(getComments);
 
 module.exports = commentsRouter;

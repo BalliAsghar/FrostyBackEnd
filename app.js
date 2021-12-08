@@ -19,8 +19,14 @@ app.get("/", (req, res) => res.json({ message: "Hello" }));
 
 app.use("/api", router);
 
-// handle error middle
+// Error Handling for all routes not found
+app.all("*", (req, res, next) => {
+  next({ statusCode: 404, message: "Route not found" });
+});
+
+// handle error middleware
 app.use(errors);
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`));

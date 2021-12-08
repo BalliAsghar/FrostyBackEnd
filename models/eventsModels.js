@@ -3,9 +3,11 @@ const Event = require("../config/databaseConfig/event.schema.js");
 exports.fetchEvents = async () => {
   try {
     const events = await Event.find({}).populate("creatorId").exec();
-    return events;
+    if (events.length > 0) return events;
+
+    return Promise.reject({ statusCode: 404, message: "No events found" });
   } catch (err) {
-    console.log(err);
+    return Promise.reject(err);
   }
 };
 

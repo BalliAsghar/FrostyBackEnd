@@ -4,42 +4,42 @@ const {
   fetchEvent,
   removeEvent,
 } = require("../models/eventsModels");
-exports.getEvents = async (req, res) => {
+
+exports.getEvents = async (req, res, next) => {
   try {
     const response = await fetchEvents();
-    console.log(response);
-  } catch {
-    console.log("error");
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.postEvent = async (req, res) => {
+exports.postEvent = async (req, res, next) => {
   const { body } = req;
   try {
     const response = await insertEvent(body);
-    console.log(response);
-  } catch {
-    console.log("error in controller");
+    res.status(201).json(response);
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.getEvent = async (req, res) => {
+exports.getEvent = async (req, res, next) => {
   const { event_id } = req.params;
   try {
     const response = await fetchEvent(event_id);
-    console.log(response);
-  } catch {
-    console.log("error");
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.deleteEvent = async (req, res) => {
-  const { event_id } = req.params;
-  console.log("event id:", event_id);
+exports.deleteEvent = async (req, res, next) => {
   try {
+    const { event_id } = req.params;
     const response = await removeEvent(event_id);
-    console.log(response);
+    res.status(200).json(response);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
