@@ -3,9 +3,14 @@ const User = require("../config/databaseConfig/user.schema.js");
 exports.fetchUsers = async () => {
   try {
     const users = await User.find({});
-    return users;
-  } catch {
-    console.log("error in model");
+
+    if (users.length > 0) {
+      return users;
+    }
+
+    return Promise.reject({ statusCode: 404, message: "Users not found" });
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 
