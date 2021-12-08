@@ -6,12 +6,12 @@ const {
   removeUser,
 } = require("../models/userModel.js");
 
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
   try {
     const users = await fetchUsers();
     res.status(200).send({ users });
-  } catch {
-    console.log("error");
+  } catch (err) {
+    next(err);
   }
 };
 
