@@ -11,10 +11,12 @@ const mockEvents = require("./mockData/MOCK_EVENT.json");
 const seedData = async () => {
   console.log("Begin seed Users");
   console.log("clear and insert users");
+  console.log("Begin delete Users");
   await User.deleteMany({});
-  await User.insertMany(mockUsers);
   console.log("clear and insert events");
   await Event.deleteMany({});
+  await User.insertMany(mockUsers);
+  console.log("clear and insert events");
   await Event.insertMany(mockEvents);
 };
 
@@ -42,3 +44,5 @@ mongoose
 //   .catch((err) => {
 //     console.log(err);
 //   });
+
+module.exports = seedData;
