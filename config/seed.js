@@ -7,6 +7,8 @@ const Comment = require("./databaseConfig/comment.schema");
 const Category = require("./databaseConfig/category.schema");
 const mockUsers = require("./mockData/MOCK_USERS.json");
 const mockEvents = require("./mockData/MOCK_EVENT.json");
+const LocationSchema = require(`./databaseConfig/location.schema`);
+const mockParks = require(`./mockData/MOCK_PARKS.json`);
 
 const runSeed = () => {
   console.log("running seed");
@@ -22,10 +24,16 @@ const runSeed = () => {
       return Event.deleteMany({});
     })
     .then(() => {
+      return LocationSchema.deleteMany({});
+    })
+    .then(() => {
       return User.insertMany(mockUsers);
     })
     .then(() => {
       return Event.insertMany(mockEvents);
+    })
+    .then(() => {
+      return LocationSchema.insertMany(mockParks);
     })
     .then(() => {
       return mongoose.connection.close();

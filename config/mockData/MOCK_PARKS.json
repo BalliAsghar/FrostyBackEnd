@@ -1,0 +1,23 @@
+[
+  {
+    "parkId": 1,
+    "name": "Debdale park",
+    "description": "A pleasant park in gorton near to Gorton reservoir",
+    "latitude": 53.459881122079196,
+    "longitude": -2.156580800575803
+  },
+  {
+    "parkId": 2,
+    "name": "Delamere park",
+    "description": "A small park in openshaw with an orchard being planted!",
+    "latitude": 53.47154857611819,
+    "longitude": -2.156921970100621
+  },
+  {
+    "parkId": 3,
+    "name": "The Vimto park",
+    "description": "This park has a sculpture commemorating Vimto!",
+    "latitude": 53.475463597324946,
+    "longitude": -2.2341344013310045
+  }
+]
