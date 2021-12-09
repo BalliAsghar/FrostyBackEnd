@@ -9,16 +9,7 @@ const EventSchema = mongoose.Schema({
     eventStart: { type: String },
     eventEnd: { type: String },
   },
-  location: {
-    longitude: {
-      type: Number,
-    },
-    latitude: {
-      type: Number,
-    },
-    name: { type: String },
-    description: { type: String },
-  },
+  location: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
   categories: [{ type: String, ref: "Category" }],
   tags: [{ type: String }],
   dateCreated: { type: Date, default: Date.now },

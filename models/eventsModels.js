@@ -26,7 +26,7 @@ exports.fetchEvent = async (id) => {
     const event = await Event.findOne({ event_id: id });
     return event;
   } catch (err) {
-    console.log(err);
+    return Promise.reject(err);
   }
 };
 
@@ -36,6 +36,6 @@ exports.removeEvent = async (id) => {
     const deletedEvent = await Event.findByIdAndDelete(id);
     return deletedEvent;
   } catch (err) {
-    console.log(err);
+    return Promise.reject(err);
   }
 };
