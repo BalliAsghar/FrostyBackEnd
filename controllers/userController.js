@@ -24,13 +24,14 @@ exports.postUser = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+exports.getUser = async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    const response = await fetchUser(user_id);
-    console.log(response);
-  } catch {
-    console.log("error in controller");
+    console.log(user_id);
+    const user = await fetchUser(user_id);
+    res.status(200).send({ user });
+  } catch (err) {
+    next(err);
   }
 };
 
