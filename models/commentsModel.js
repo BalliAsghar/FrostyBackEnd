@@ -49,3 +49,14 @@ exports.insertCommentToEvent = async (body) => {
     return Promise.reject(error);
   }
 };
+
+exports.removeComment = async (id) => {
+  try {
+    const comment = await Comment.findByIdAndDelete(id);
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "No comment found" });
+    return comment;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
