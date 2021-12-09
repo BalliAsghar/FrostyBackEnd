@@ -48,6 +48,6 @@ eventsRouter.delete("/:eventId", deleteEvent);
  * @DESCRIPTION Get All Comments by Event ID
  */
 
-eventsRouter.get("/:event_id/comments", getEventComments);
+eventsRouter.get("/:eventId/comments", getEventComments);
 
 module.exports = eventsRouter;
