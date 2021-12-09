@@ -15,19 +15,19 @@ exports.getUsers = async (req, res, next) => {
   }
 };
 
-exports.postUser = async (req, res) => {
+exports.postUser = async (req, res, next) => {
   const { body } = req;
   try {
-    const reponse = await insertUser(body);
-  } catch {
-    console.log("failed");
+    const response = await insertUser(body);
+    res.status(201).send({ response });
+  } catch (err) {
+    next(err);
   }
 };
 
 exports.getUser = async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    console.log(user_id);
     const user = await fetchUser(user_id);
     res.status(200).send({ user });
   } catch (err) {
@@ -35,23 +35,23 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
-exports.patchUser = async (req, res) => {
+exports.patchUser = async (req, res, next) => {
   const { user_id } = req.params;
   const { body } = req;
   try {
-    const response = await updateUser(user_id, body);
-    console.log(response);
-  } catch {
-    console.log("error in controller");
+    const updatedUser = await updateUser(user_id, body);
+    res.status(200).send({ updatedUser });
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res, next) => {
   const { user_id } = req.params;
   try {
     const response = await removeUser(user_id);
     console.log(response);
-  } catch {
-    console.log("error in controller");
+  } catch (err) {
+    next(err);
   }
 };
