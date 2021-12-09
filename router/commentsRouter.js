@@ -34,4 +34,11 @@ commentsRouter.route("/:id").delete(deleteComment);
  */
 commentsRouter.route("/:id").patch(updateComment);
 
+// /**
+//  * @METHOD PATCH
+//  * @ROUTE /api/comments/:ID/vote
+//  * @DESCRIPTION UPDATE A Comment BY ID
+//  */
+//  commentsRouter.route("/:id/vote").patch(updateComment);
+
 module.exports = commentsRouter;

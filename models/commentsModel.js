@@ -63,11 +63,23 @@ exports.removeComment = async (id) => {
 
 exports.changeComment = async (id, body) => {
   try {
-    const { commentBody } = body;
-    const comment = await Comment.findByIdAndUpdate(id, { commentBody });
-    if (!comment)
-      return Promise.reject({ statusCode: 404, message: "No comment found" });
-    return comment;
+    const { newCommentBody, newVote } = body;
+    if (newVote) {
+      const vote = await Comment.findByIdAndUpdate(id, {
+        $inc: { vote: newVote },
+      });
+      return vote;
+    }
+    if (newCommentBody) {
+      const comment = await Comment.findByIdAndUpdate(id, {
+        commentBody: newCommentBody,
+      });
+      return comment;
+    }
+    return Promise.reject({
+      statusCode: 400,
+      message: "No comment body or vote provided",
+    });
   } catch (error) {
     return Promise.reject(error);
   }
