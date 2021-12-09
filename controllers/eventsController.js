@@ -7,8 +7,8 @@ const {
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const response = await fetchEvents();
-    res.status(200).json(response);
+    const events = await fetchEvents();
+    res.status(200).json({ events });
   } catch (err) {
     next(err);
   }
@@ -27,8 +27,8 @@ exports.postEvent = async (req, res, next) => {
 exports.getEvent = async (req, res, next) => {
   const { event_id } = req.params;
   try {
-    const response = await fetchEvent(event_id);
-    res.status(200).json(response);
+    const event = await fetchEvent(event_id);
+    res.status(200).json({ event });
   } catch (err) {
     next(err);
   }
