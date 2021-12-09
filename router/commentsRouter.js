@@ -3,6 +3,7 @@ const {
   getComment,
   postComment,
   deleteComment,
+  updateComment,
 } = require("../controllers/commentsController");
 
 /**
@@ -25,5 +26,12 @@ commentsRouter.route("/").post(postComment);
  * @DESCRIPTION DELETE A Comment
  */
 commentsRouter.route("/:id").delete(deleteComment);
+
+/**
+ * @METHOD PATCH
+ * @ROUTE /api/comments/:ID
+ * @DESCRIPTION UPDATE A Comment BY ID
+ */
+commentsRouter.route("/:id").patch(updateComment);
 
 module.exports = commentsRouter;

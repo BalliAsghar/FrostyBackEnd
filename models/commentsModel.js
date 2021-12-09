@@ -60,3 +60,15 @@ exports.removeComment = async (id) => {
     return Promise.reject(error);
   }
 };
+
+exports.changeComment = async (id, body) => {
+  try {
+    const { commentBody } = body;
+    const comment = await Comment.findByIdAndUpdate(id, { commentBody });
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "No comment found" });
+    return comment;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
