@@ -26,10 +26,14 @@ exports.insertUser = async (body) => {
 
 exports.fetchUser = async (id) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).exec();
+
+    if (!user) {
+      return Promise.reject({ statusCode: 404, message: "User not found" });
+    }
     return user;
-  } catch {
-    console.log("error in model");
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 
