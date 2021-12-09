@@ -1,17 +1,18 @@
 const request = require("supertest");
 const app = require("../../app");
-const db = require("../../config/db2");
+const db = require("../../config/db");
+const runSeed = require("../../config/seed");
 
-beforeAll(async () => {
-  await db.connectDB();
-});
+// beforeEach(async () => {
+// await runSeed();
+// });
 
 afterAll(async () => {
-  await db.closeDB();
+  //await db.closeDB();
 });
 
 describe("/api/users", () => {
-  describe.skip("GET", () => {
+  describe("GET", () => {
     test("status:200 and returns array of user objects", () => {
       return request(app)
         .get("/api/users")
@@ -33,8 +34,6 @@ describe("/api/users", () => {
           });
         });
     });
-
-    //test("404 test pacecholder")
   });
 
   describe("Test", () => {
@@ -42,14 +41,55 @@ describe("/api/users", () => {
       return request(app).get("/api/users").expect(200);
     });
   });
-  describe.skip("DELETE", () => {
-    test("status:405 and returns error message if method is wrong", () => {
+
+  describe("GET api/users/:user_id", () => {
+    test("Status 200: Returns a single user object", () => {
       return request(app)
-        .delete("/api/users")
-        .expect(405)
-        .then((res) => {
-          expect(res.body.message).toEqual("Method not allowed");
+        .get("/api/users/61b0d0249ea3440ac734c140")
+        .expect(200)
+        .then((response) => {
+          expect(response.body.user).toEqual(
+            expect.objectContaining({
+              _id: expect.any(String),
+              username: expect.any(String),
+              displayName: expect.any(String),
+              dateOfBirth: expect.any(String),
+              followedUsers: expect.any(Array),
+              followedCategories: expect.any(Array),
+              postedPictures: expect.any(Array),
+              attendedEvents: expect.any(Array),
+              hostedEvents: expect.any(Array),
+              dateJoined: expect.any(String),
+            })
+          );
         });
+    });
+
+    test("Status: 404 returns 'not found if response null", () => {
+      return request(app)
+        .get("/api/users/61b0d0249ea3440ac734c150")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.message).toBe("User not found");
+        });
+    });
+
+    test("Status 400: responds with invalid ID when passed invalid mongo ObjectID", () => {
+      return request(app)
+        .get("/api/users/notanId")
+        .expect(404)
+        .then((res) => {
+          expect(res.body.message).toBe("Invalid ID");
+        });
+    });
+  });
+
+  describe.skip("DELETE api/users/:user_id", () => {
+    test("Status 204: reponds with no content and deletes record", () => {
+      return request(app)
+        .delete("/api/users/61b0d0249ea3440ac734c149")
+        .expect(204)
+        .then(() => {});
     });
   });
 });
