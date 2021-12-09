@@ -1,18 +1,11 @@
 {
-  "event_id": 4,
+  "eventID": 4,
   "title": "testing event",
   "description": "I'm the description of a testing event",
   "creator": "clawling2",
-  "eventDateTime": {
-    "eventStart": "2021-12-25T15:00:00.000Z",
-    "eventEnd": "2021-12-25T17:00:00.000Z"
-  },
-  "location": {
-    "latitude": 1,
-    "logitude": 1,
-    "name": "Test location",
-    "description": "test location descrip"
-  },
+  "eventStart": "2021-12-25T15:00:00.000Z",
+  "eventEnd": "2021-12-25T17:00:00.000Z",
+  "location": 1,
   "categories": ["coding"],
   "tags": ["test tag"]
 }
