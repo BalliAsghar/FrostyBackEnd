@@ -4,6 +4,7 @@ const {
   postEvent,
   getEvent,
   deleteEvent,
+  getEventComments,
 } = require("../controllers/eventsController");
 
 /**
@@ -41,4 +42,11 @@ eventsRouter.get("/:event_id", getEvent);
 
 eventsRouter.delete("/:event_id", deleteEvent);
 
+/**
+ * @METHOD GET
+ * @ROUTE /api/events/:eventId/comments
+ * @DESCRIPTION Get All Comments by Event ID
+ */
+
+eventsRouter.get("/:event_id/comments", getEventComments);
 module.exports = eventsRouter;

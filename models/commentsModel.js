@@ -23,3 +23,14 @@ exports.fetchComment = async (id) => {
     return Promise.reject(error);
   }
 };
+
+exports.fetchEventComments = async (eventId) => {
+  try {
+    const comments = await Comment.find({ eventId });
+    if (comments.length === 0)
+      return Promise.reject({ statusCode: 404, message: "No comments found" });
+    return comments;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};

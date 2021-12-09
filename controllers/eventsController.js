@@ -4,6 +4,7 @@ const {
   fetchEvent,
   removeEvent,
 } = require("../models/eventsModels");
+const { fetchEventComments } = require("../models/commentsModel");
 
 exports.getEvents = async (req, res, next) => {
   try {
@@ -39,6 +40,16 @@ exports.deleteEvent = async (req, res, next) => {
     const { event_id } = req.params;
     const response = await removeEvent(event_id);
     res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getEventComments = async (req, res, next) => {
+  try {
+    const { event_id } = req.params;
+    const comments = await fetchEventComments(event_id);
+    res.status(200).json({ comments });
   } catch (err) {
     next(err);
   }
