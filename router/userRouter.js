@@ -24,13 +24,13 @@ userRouter.get("/", getUsers);
 userRouter.post("/", postUser);
 
 /**
- * @Route /api/users/:id
+ * @Route /api/users/:user_id
  * @Method GET
  * @Function getUser()
  * @Description Get a user by id
  * @Param id
  */
-userRouter.get("/:id", getUser);
+userRouter.get("/:user_id", getUser);
 
 /**
  * @Method PATCH
