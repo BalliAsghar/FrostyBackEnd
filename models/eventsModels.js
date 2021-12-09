@@ -1,3 +1,6 @@
+const {
+  findOneAndUpdate,
+} = require("../config/databaseConfig/event.schema.js");
 const Event = require("../config/databaseConfig/event.schema.js");
 
 exports.fetchEvents = async () => {
@@ -37,5 +40,26 @@ exports.removeEvent = async (id) => {
     return deletedEvent;
   } catch (err) {
     return Promise.reject(err);
+  }
+};
+
+exports.updateEvent = async (eventId, body) => {
+  try {
+    console.log(body);
+    const updatedEvent = await Event.findOneAndUpdate(
+      { eventId: eventId },
+      body,
+      { new: true }
+    );
+    console.log(updatedEvent);
+    if (!updatedEvent) {
+      return Promise.reject({
+        statusCode: 400,
+        message: "No comment body or vote provided",
+      });
+    }
+    return updatedEvent;
+  } catch (error) {
+    return Promise.reject(error);
   }
 };

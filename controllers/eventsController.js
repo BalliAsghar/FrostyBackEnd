@@ -3,6 +3,7 @@ const {
   insertEvent,
   fetchEvent,
   removeEvent,
+  updateEvent,
 } = require("../models/eventsModels");
 const { fetchEventComments } = require("../models/commentsModel");
 
@@ -63,5 +64,16 @@ exports.postCommentToEvent = async (req, res, next) => {
     res.status(201).json({ comment });
   } catch (err) {
     next(err);
+  }
+};
+
+exports.patchEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { body } = req;
+  try {
+    const updatedEvent = await updateEvent(eventId, body);
+    res.status(200).json({ updatedEvent });
+  } catch (error) {
+    next(error);
   }
 };

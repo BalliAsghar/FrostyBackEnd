@@ -5,6 +5,7 @@ const {
   getEvent,
   deleteEvent,
   getEventComments,
+  patchEvent,
 } = require("../controllers/eventsController");
 
 /**
@@ -41,6 +42,16 @@ eventsRouter.get("/:eventId", getEvent);
  */
 
 eventsRouter.delete("/:eventId", deleteEvent);
+
+/**
+ * @Method DELETE
+ * @Route /api/events/:id
+ * @Function deleteEvent
+ * @Description Delete a single event
+ * @Param {String} id
+ */
+
+eventsRouter.patch("/:eventId", patchEvent);
 
 /**
  * @METHOD GET
