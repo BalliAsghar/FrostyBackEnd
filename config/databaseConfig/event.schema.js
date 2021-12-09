@@ -12,6 +12,7 @@ const EventSchema = mongoose.Schema({
   tags: [{ type: String }],
   dateCreated: { type: Date, default: Date.now },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   comment_count: { type: Number },
 });
 

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const commentsSchema = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  username: { type: String, ref: "User" },
   body: { type: String },
   dateCreated: { type: Date, default: Date.now },
-  eventId: { type: mongoose.Schema.Types.ObjectId, ref: "Event" },
+  eventId: { type: Number, ref: "Event" },
   votes: { type: Number, default: 0 },
 });
 
