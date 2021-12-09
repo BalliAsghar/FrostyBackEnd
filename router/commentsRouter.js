@@ -3,9 +3,9 @@ const { getComments } = require("../controllers/commentsController");
 
 /**
  * @METHOD GET
- * @ROUTE /api/comments
- * @DESCRIPTION Get all comments
+ * @ROUTE /api/comments/:event_id/comments
+ * @DESCRIPTION Get all comments by event id
  */
-commentsRouter.route("/").get(getComments);
+commentsRouter.route("/:event_id/comments").get(getComments);
 
 module.exports = commentsRouter;
