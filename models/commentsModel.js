@@ -65,15 +65,23 @@ exports.changeComment = async (id, body) => {
   try {
     const { newCommentBody, newVote } = body;
     if (newVote) {
-      const vote = await Comment.findByIdAndUpdate(id, {
-        $inc: { vote: newVote },
-      });
+      const vote = await Comment.findByIdAndUpdate(
+        id,
+        {
+          $inc: { votes: newVote },
+        },
+        { new: true }
+      );
       return vote;
     }
     if (newCommentBody) {
-      const comment = await Comment.findByIdAndUpdate(id, {
-        commentBody: newCommentBody,
-      });
+      const comment = await Comment.findByIdAndUpdate(
+        id,
+        {
+          commentBody: newCommentBody,
+        },
+        { new: true }
+      );
       return comment;
     }
     return Promise.reject({
