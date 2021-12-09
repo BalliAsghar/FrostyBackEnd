@@ -26,9 +26,9 @@ exports.postEvent = async (req, res, next) => {
 };
 
 exports.getEvent = async (req, res, next) => {
-  const { event_id } = req.params;
+  const { eventId } = req.params;
   try {
-    const event = await fetchEvent(event_id);
+    const event = await fetchEvent(eventId);
     res.status(200).json({ event });
   } catch (err) {
     next(err);
@@ -37,8 +37,8 @@ exports.getEvent = async (req, res, next) => {
 
 exports.deleteEvent = async (req, res, next) => {
   try {
-    const { event_id } = req.params;
-    const response = await removeEvent(event_id);
+    const { eventId } = req.params;
+    const response = await removeEvent(eventId);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -47,9 +47,20 @@ exports.deleteEvent = async (req, res, next) => {
 
 exports.getEventComments = async (req, res, next) => {
   try {
-    const { event_id } = req.params;
-    const comments = await fetchEventComments(event_id);
+    const { eventId } = req.params;
+    const comments = await fetchEventComments(eventId);
     res.status(200).json({ comments });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.postCommentToEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { body } = req;
+  try {
+    const comment = await insertCommentToEvent(eventId, body);
+    res.status(201).json({ comment });
   } catch (err) {
     next(err);
   }

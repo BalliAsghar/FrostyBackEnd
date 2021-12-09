@@ -23,7 +23,7 @@ exports.insertEvent = async (body) => {
 
 exports.fetchEvent = async (id) => {
   try {
-    const event = await Event.findOne({ event_id: id });
+    const event = await Event.findOne({ eventId: id });
     return event;
   } catch (err) {
     return Promise.reject(err);

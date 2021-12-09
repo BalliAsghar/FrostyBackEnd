@@ -30,7 +30,7 @@ eventsRouter.post("/", postEvent);
  * @Description Get a single event
  * @Param {String} id
  */
-eventsRouter.get("/:event_id", getEvent);
+eventsRouter.get("/:eventId", getEvent);
 
 /**
  * @Method DELETE
@@ -40,7 +40,7 @@ eventsRouter.get("/:event_id", getEvent);
  * @Param {String} id
  */
 
-eventsRouter.delete("/:event_id", deleteEvent);
+eventsRouter.delete("/:eventId", deleteEvent);
 
 /**
  * @METHOD GET
@@ -49,4 +49,5 @@ eventsRouter.delete("/:event_id", deleteEvent);
  */
 
 eventsRouter.get("/:event_id/comments", getEventComments);
+
 module.exports = eventsRouter;
