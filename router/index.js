@@ -4,6 +4,7 @@ const eventsRouter = require("./eventsRouter");
 const userRouter = require("./userRouter");
 const commentsRouter = require("./commentsRouter");
 const parksRouter = require("./parksRouter");
+const chatRouter = require("./chatRouter");
 const { uploadPhoto } = require("../utils/uploadPhoto");
 // Index Route for /api
 router.get("/", (req, res) => res.json({ message: "Api Router" }));
@@ -13,6 +14,7 @@ router.use("/events", eventsRouter);
 router.use("/users", userRouter);
 router.use("/comments", commentsRouter);
 router.use("/parks", parksRouter);
+router.use("/chat", chatRouter);
 
 /**
  * @Method: POST
