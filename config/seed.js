@@ -5,11 +5,13 @@ const User = require("./databaseConfig/user.schema");
 const Event = require("./databaseConfig/event.schema");
 const Comment = require("./databaseConfig/comment.schema");
 const Category = require("./databaseConfig/category.schema");
+const Chat = require("./databaseConfig/chat.schema");
 const mockUsers = require("./mockData/MOCK_USERS.json");
 const mockEvents = require("./mockData/MOCK_EVENT.json");
 const LocationSchema = require(`./databaseConfig/location.schema`);
 const mockParks = require(`./mockData/MOCK_PARKS.json`);
 const mockComments = require("./mockData/MOCK_COMMENTS.json");
+const mockChat = require("./mockData/MOCK_CHAT.json");
 
 const runSeed = () => {
   console.log("running seed");
@@ -31,6 +33,9 @@ const runSeed = () => {
       return Comment.deleteMany({});
     })
     .then(() => {
+      return Chat.deleteMany({});
+    })
+    .then(() => {
       return User.insertMany(mockUsers);
     })
     .then(() => {
@@ -41,6 +46,9 @@ const runSeed = () => {
     })
     .then(() => {
       return Comment.insertMany(mockComments);
+    })
+    .then(() => {
+      return Chat.insertMany(mockChat);
     })
     .then(() => {
       return mongoose.connection.close();
