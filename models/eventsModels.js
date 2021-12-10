@@ -1,6 +1,3 @@
-const {
-  findOneAndUpdate,
-} = require("../config/databaseConfig/event.schema.js");
 const Event = require("../config/databaseConfig/event.schema.js");
 
 exports.fetchEvents = async () => {
