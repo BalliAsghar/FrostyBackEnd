@@ -13,12 +13,15 @@ const mockParks = require(`./mockData/MOCK_PARKS.json`);
 const mockComments = require("./mockData/MOCK_COMMENTS.json");
 const mockChat = require("./mockData/MOCK_CHAT.json");
 
+// load envs
+dotenv.config({
+  path: "./.env.develop",
+});
+
 const runSeed = () => {
   console.log("running seed");
   mongoose
-    .connect(
-      "mongodb+srv://frostythesnowman2021:frostythesnowman2021@thesnowman.1ublf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    )
+    .connect(process.env.DB_URL)
     .then(() => {
       console.log("DB connection open");
       return User.deleteMany({});
