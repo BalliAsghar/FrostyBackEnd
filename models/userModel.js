@@ -1,4 +1,5 @@
 const User = require("../config/databaseConfig/user.schema.js");
+const Event = require("../config/databaseConfig/event.schema.js");
 
 exports.fetchUsers = async () => {
   try {
@@ -54,5 +55,21 @@ exports.removeUser = async (id) => {
     return deletedUser;
   } catch {
     console.log("not found");
+  }
+};
+
+exports.fetchEventsByUsername = async (username) => {
+  // find all events where creator is the same as the one passed in
+  try {
+    const events = await Event.find({ creator: username });
+    if (events.length > 0) {
+      return events;
+    }
+    return Promise.reject({
+      statusCode: 404,
+      message: "Events not found",
+    });
+  } catch (err) {
+    return Promise.reject(err);
   }
 };

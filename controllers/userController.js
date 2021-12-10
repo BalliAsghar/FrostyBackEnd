@@ -4,6 +4,7 @@ const {
   fetchUser,
   updateUser,
   removeUser,
+  fetchEventsByUsername,
 } = require("../models/userModel.js");
 
 exports.getUsers = async (req, res, next) => {
@@ -53,5 +54,15 @@ exports.deleteUser = async (req, res, next) => {
     console.log(response);
   } catch (err) {
     next(err);
+  }
+};
+
+exports.getEventsByUsername = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const events = await fetchEventsByUsername(username);
+    res.status(200).send({ events });
+  } catch (error) {
+    next(error);
   }
 };

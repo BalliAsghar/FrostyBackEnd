@@ -5,6 +5,7 @@ const {
   getUser,
   patchUser,
   deleteUser,
+  getEventsByUsername,
 } = require("../controllers/userController");
 
 /**
@@ -49,5 +50,14 @@ userRouter.patch("/:id", patchUser);
  * @Param id
  */
 userRouter.delete("/:id", deleteUser);
+
+/**
+ * @Method GET
+ * @Route /api/users/:username/events
+ * @Function getEventsByUsername()
+ * @Description get events by username
+ * @Param username
+ */
+userRouter.get("/:username/events", getEventsByUsername);
 
 module.exports = userRouter;
