@@ -2,8 +2,8 @@ const { fetchChatHistory, insertMessage } = require("../models/chatModels");
 
 exports.getChatHistory = async (req, res, next) => {
   try {
-    const { eventId } = req.params;
-    const messages = await fetchChatHistory(eventId);
+    const { eventTitle } = req.params;
+    const messages = await fetchChatHistory(eventTitle);
     res.status(200).json({ messages });
   } catch (error) {
     next(error);

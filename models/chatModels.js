@@ -1,8 +1,10 @@
 const Chat = require("../config/databaseConfig/chat.schema");
 
-exports.fetchChatHistory = async (eventId) => {
+exports.fetchChatHistory = async (eventTitle) => {
   try {
-    const messages = await Chat.find({ eventId: eventId });
+    const messages = await Chat.find({ title: eventTitle }).sort({
+      dateCreated: 1,
+    });
     if (messages.length > 0) return messages;
     return Promise.reject({ statusCode: 404, message: "No messages found" });
   } catch (error) {

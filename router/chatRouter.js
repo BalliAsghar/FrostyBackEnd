@@ -16,6 +16,6 @@ chatRouter.route("/").post(postMessage);
  * @ROUTE /api/chat/:eventId
  * @DESCRIPTION Get chat history for an event ID
  */
-chatRouter.route("/:eventId").get(getChatHistory);
+chatRouter.route("/:eventTitle").get(getChatHistory);
 
 module.exports = chatRouter;
