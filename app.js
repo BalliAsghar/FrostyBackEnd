@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const FileUpload = require("express-fileupload");
 const { connectDB } = require("./config/db");
 const app = express();
 const dotenv = require("dotenv");
@@ -13,6 +14,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+app.use(FileUpload());
 
 // Index Route
 app.get("/", (req, res) => res.json({ message: "Hello" }));
