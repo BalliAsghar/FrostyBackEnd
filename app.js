@@ -8,7 +8,9 @@ const router = require("./router");
 const errors = require("./errors");
 
 // load envs
-dotenv.config({});
+dotenv.config({
+  path: "./.env.develop",
+});
 // database connection
 connectDB();
 
