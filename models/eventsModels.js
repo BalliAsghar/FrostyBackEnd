@@ -1,8 +1,15 @@
 const Event = require("../config/databaseConfig/event.schema.js");
 
-exports.fetchEvents = async () => {
+exports.fetchEvents = async (query) => {
   try {
-    const events = await Event.find({});
+    const { title, creator, eventStart } = query;
+    const filterQuery = {};
+    if (title) filterQuery.title = title;
+    if (creator) filterQuery.creator = creator;
+    if (eventStart) filterQuery.eventStart = eventStart;
+    console.log(filterQuery);
+
+    const events = await Event.find(filterQuery);
     if (events.length > 0) return events;
 
     return Promise.reject({ statusCode: 404, message: "No events found" });

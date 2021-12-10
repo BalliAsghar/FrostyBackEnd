@@ -9,7 +9,8 @@ const { fetchEventComments } = require("../models/commentsModel");
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const events = await fetchEvents();
+    const query = req.query;
+    const events = await fetchEvents(query);
     res.status(200).json({ events });
   } catch (err) {
     next(err);
