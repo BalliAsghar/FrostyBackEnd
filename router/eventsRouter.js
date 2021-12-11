@@ -7,14 +7,16 @@ const {
   getEventComments,
   patchEvent,
 } = require("../controllers/eventsController");
+const auth = require("../auth/authMiddleware");
 
 /**
  * @Method GET
  * @Route /api/events
  * @Function getEvents
  * @Description Get all events
+ * @Access Private
  */
-eventsRouter.get("/", getEvents);
+eventsRouter.get("/", auth, getEvents);
 /**
  * @Method POST
  * @Route /api/events
@@ -22,7 +24,7 @@ eventsRouter.get("/", getEvents);
  * @Description Create a new event
  */
 
-eventsRouter.post("/", postEvent);
+eventsRouter.post("/", auth, postEvent);
 
 /**
  * @Method GET
@@ -31,7 +33,7 @@ eventsRouter.post("/", postEvent);
  * @Description Get a single event
  * @Param {String} id
  */
-eventsRouter.get("/:eventId", getEvent);
+eventsRouter.get("/:eventId", auth, getEvent);
 
 /**
  * @Method DELETE
@@ -41,7 +43,7 @@ eventsRouter.get("/:eventId", getEvent);
  * @Param {String} id
  */
 
-eventsRouter.delete("/:eventId", deleteEvent);
+eventsRouter.delete("/:eventId", auth, deleteEvent);
 
 /**
  * @Method DELETE
@@ -51,7 +53,7 @@ eventsRouter.delete("/:eventId", deleteEvent);
  * @Param {String} id
  */
 
-eventsRouter.patch("/:eventId", patchEvent);
+eventsRouter.patch("/:eventId", auth, patchEvent);
 
 /**
  * @METHOD GET
@@ -59,6 +61,6 @@ eventsRouter.patch("/:eventId", patchEvent);
  * @DESCRIPTION Get All Comments by Event ID
  */
 
-eventsRouter.get("/:eventId/comments", getEventComments);
+eventsRouter.get("/:eventId/comments", auth, getEventComments);
 
 module.exports = eventsRouter;

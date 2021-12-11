@@ -1,5 +1,5 @@
 const Event = require("../config/databaseConfig/event.schema.js");
-
+// ✅
 exports.fetchEvents = async (query) => {
   try {
     const { title, creator, description } = query;
@@ -19,9 +19,7 @@ exports.fetchEvents = async (query) => {
 
 exports.insertEvent = async (body) => {
   try {
-    const newEvent = new Event(body);
-    const postedEvent = await newEvent.save();
-    return postedEvent;
+    //
   } catch (err) {
     return Promise.reject(err);
   }
