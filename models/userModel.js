@@ -1,6 +1,7 @@
 const User = require("../config/databaseConfig/user.schema.js");
 const Event = require("../config/databaseConfig/event.schema.js");
 const { hashPassword, signToken, decryptPassword } = require("../auth/index");
+const uploadToS3 = require("../utils/uploadToS3");
 
 exports.fetchUsers = async () => {
   try {
@@ -16,7 +17,7 @@ exports.fetchUsers = async () => {
   }
 };
 
-exports.insertUser = async (body) => {
+exports.insertUser = async (body, files) => {
   try {
     const user = await User.findOne({ username: body.username });
     if (user)
@@ -24,14 +25,23 @@ exports.insertUser = async (body) => {
         statusCode: 400,
         message: "User already exists",
       });
+
+    // cheack if the user has send image
+    const S3Res = files ? await uploadToS3(files) : null;
+
+    // grab the image url from the S3 response
+    const avatarUrl = S3Res ? S3Res.Location : null;
     // hash the password before saving using the hashPassword function
     const hashedPassword = await hashPassword(body.password);
+    // create a new user
     const newUser = new User({
       ...body,
       password: hashedPassword,
+      avatarUrl,
     });
 
     const savedUser = await newUser.save();
+
     // make a payload with the user's id and username
     const payload = {
       id: savedUser._id,
