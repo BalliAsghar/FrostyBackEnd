@@ -8,7 +8,10 @@ exports.fetchEvents = async (query) => {
     if (title) queryObj.title = title;
     if (creator) queryObj.creator = creator;
     if (description) queryObj.description = description;
-    const events = await Event.find(queryObj);
+
+    const events = await Event.find(queryObj)
+      .populate("creator", "displayName avatarUrl username")
+      .sort({ createdAt: 1 });
 
     if (events) return events;
 
@@ -39,7 +42,7 @@ exports.insertEvent = async (body, files, user) => {
     const newEvent = new Event({
       ...body,
       eventImage,
-      creator: user.username,
+      creator: user.id,
     });
 
     // save the event
@@ -53,7 +56,6 @@ exports.insertEvent = async (body, files, user) => {
 
 exports.fetchEvent = async (id) => {
   try {
-    console.log(id);
     const event = await Event.find({ eventId: id });
     if (event) return event;
     return Promise.reject({ statusCode: 404, message: "No event found" });
