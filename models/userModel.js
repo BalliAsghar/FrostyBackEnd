@@ -54,7 +54,7 @@ exports.insertUser = async (body, files) => {
     });
     // return user without the password property and the token property as well
     return {
-      user: {
+      User: {
         ...savedUser._doc,
         password: undefined,
       },

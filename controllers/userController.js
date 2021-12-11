@@ -21,7 +21,7 @@ exports.postUser = async (req, res, next) => {
   const { body } = req;
   try {
     const User = await insertUser(body, req.files);
-    res.status(201).send({ User });
+    res.status(201).send(User);
   } catch (err) {
     next(err);
   }
