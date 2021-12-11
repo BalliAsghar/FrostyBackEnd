@@ -4,6 +4,7 @@ const {
   fetchEvent,
   removeEvent,
   updateEvent,
+  perticipateInEvent,
 } = require("../models/eventsModels");
 const { fetchEventComments } = require("../models/commentsModel");
 
@@ -74,6 +75,17 @@ exports.patchEvent = async (req, res, next) => {
   try {
     const updatedEvent = await updateEvent(eventId, body);
     res.status(200).json({ updatedEvent });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.perticipateEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { user } = req;
+  try {
+    const event = await perticipateInEvent(eventId, user);
+    res.status(200).json({ event });
   } catch (error) {
     next(error);
   }

@@ -98,3 +98,25 @@ exports.updateEvent = async (eventId, body) => {
     return Promise.reject(error);
   }
 };
+
+exports.perticipateInEvent = async (eventId, user) => {
+  try {
+    const event = await Event.findOne({ eventId: eventId });
+    if (!event) {
+      return Promise.reject({
+        statusCode: 400,
+        message: "No event found",
+      });
+    }
+
+    const updatedEvent = await Event.findOneAndUpdate(
+      { eventId: eventId },
+      { $addToSet: { participants: user.id } },
+      { new: true }
+    );
+
+    return updatedEvent;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
