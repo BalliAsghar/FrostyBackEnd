@@ -1,5 +1,6 @@
 const User = require("../config/databaseConfig/user.schema.js");
 const Event = require("../config/databaseConfig/event.schema.js");
+const { hashPassword, signToken, decryptPassword } = require("../auth/index");
 
 exports.fetchUsers = async () => {
   try {
@@ -18,17 +19,39 @@ exports.fetchUsers = async () => {
 exports.insertUser = async (body) => {
   try {
     const user = await User.findOne({ username: body.username });
-    const email = await User.findOne({ email: body.email });
-    if (user || email) {
+    if (user)
       return Promise.reject({
         statusCode: 400,
-        message: "Username or email already exists",
+        message: "User already exists",
       });
-    }
-    const newUser = await User.create(body);
-    return newUser;
-  } catch (err) {
-    return Promise.reject(err);
+    // hash the password before saving using the hashPassword function
+    const hashedPassword = await hashPassword(body.password);
+    const newUser = new User({
+      ...body,
+      password: hashedPassword,
+    });
+
+    const savedUser = await newUser.save();
+    // make a payload with the user's id and username
+    const payload = {
+      id: savedUser._id,
+      username: savedUser.username,
+    };
+
+    // sign the user in and return the token
+    const token = await signToken(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    // return user without the password property and the token property as well
+    return {
+      user: {
+        ...savedUser._doc,
+        password: undefined,
+      },
+      token,
+    };
+  } catch (error) {
+    return Promise.reject(error);
   }
 };
 
@@ -76,6 +99,47 @@ exports.fetchEventsByUsername = async (username) => {
       statusCode: 404,
       message: "Events not found",
     });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+exports.signInUser = async (username, password) => {
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return Promise.reject({
+        statusCode: 404,
+        message: "User not found",
+      });
+    }
+    // check if the password is correct by decrypting it
+    const isPasswordValid = await decryptPassword(password, user.password);
+
+    // if the password is not valid, reject the promise
+    if (!isPasswordValid) {
+      return Promise.reject({
+        statusCode: 400,
+        message: "Invalid password",
+      });
+    }
+    // make a payload with the user's id and username
+    const payload = {
+      id: user._id,
+      username: user.username,
+    };
+    // sign the user in and return the token
+    const token = await signToken(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    // return user without the password property
+    return {
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+      token,
+    };
   } catch (err) {
     return Promise.reject(err);
   }

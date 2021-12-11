@@ -1,4 +1,23 @@
+const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
+
+const signToken = (payload, secret, options) => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(payload, secret, options, (err, token) => {
+      if (err) reject(err);
+      resolve(token);
+    });
+  });
+};
+
+const verifyToken = (token, secret) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) reject(err);
+      resolve(decoded);
+    });
+  });
+};
 
 const hashPassword = (password) => {
   return new Promise((resolve, reject) => {
@@ -28,4 +47,9 @@ const decryptPassword = (password, hash) => {
   });
 };
 
-module.exports = { hashPassword, decryptPassword };
+module.exports = {
+  signToken,
+  verifyToken,
+  hashPassword,
+  decryptPassword,
+};

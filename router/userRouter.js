@@ -6,6 +6,7 @@ const {
   patchUser,
   deleteUser,
   getEventsByUsername,
+  loginUser,
 } = require("../controllers/userController");
 
 /**
@@ -59,5 +60,15 @@ userRouter.delete("/:id", deleteUser);
  * @Param username
  */
 userRouter.get("/:username/events", getEventsByUsername);
+
+/**
+ * @Method POST
+ * @Route /api/users/login
+ * @Function loginUser()
+ * @Description Login a user by username and password
+ * @body username
+ * @body password
+ */
+userRouter.post("/login", loginUser);
 
 module.exports = userRouter;
