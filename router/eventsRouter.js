@@ -7,6 +7,7 @@ const {
   getEventComments,
   patchEvent,
   perticipateEvent,
+  deletePerticipate,
 } = require("../controllers/eventsController");
 const auth = require("../auth/authMiddleware");
 
@@ -72,6 +73,16 @@ eventsRouter.get("/:eventId/comments", auth, getEventComments);
  * @Param {String} eventId
  */
 
-eventsRouter.get("/:eventId/perticipate", auth, perticipateEvent);
+eventsRouter.post("/:eventId/perticipate", auth, perticipateEvent);
+
+/**
+ * @METHOD Put
+ * @ROUTE /api/events/:eventId/perticipate
+ * @DESCRIPTION Perticipate to an event by event ID
+ * @Access Private
+ * @Param {String} eventId
+ */
+
+eventsRouter.delete("/:eventId/perticipate", auth, deletePerticipate);
 
 module.exports = eventsRouter;
