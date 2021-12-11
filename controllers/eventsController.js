@@ -30,8 +30,8 @@ exports.postEvent = async (req, res, next) => {
 exports.getEvent = async (req, res, next) => {
   const { eventId } = req.params;
   try {
-    const event = await fetchEvent(eventId);
-    res.status(200).json({ event });
+    const Event = await fetchEvent(eventId);
+    res.status(200).json({ Event });
   } catch (err) {
     next(err);
   }

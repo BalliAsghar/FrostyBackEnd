@@ -17,11 +17,18 @@ exports.fetchUsers = async () => {
 
 exports.insertUser = async (body) => {
   try {
-    const postedUser = new User(body);
-    const response = await postedUser.save();
-    console.log(response);
+    const user = await User.findOne({ username: body.username });
+    const email = await User.findOne({ email: body.email });
+    if (user || email) {
+      return Promise.reject({
+        statusCode: 400,
+        message: "Username or email already exists",
+      });
+    }
+    const newUser = await User.create(body);
+    return newUser;
   } catch (err) {
-    console.log(err);
+    return Promise.reject(err);
   }
 };
 
@@ -43,8 +50,8 @@ exports.updateUser = async (id, body) => {
     await User.findByIdAndUpdate(id, body);
     const updatedUser = User.findById(id);
     return updatedUser;
-  } catch {
-    console.log("error in model");
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 
@@ -53,8 +60,8 @@ exports.removeUser = async (id) => {
     const user = await User.findById(id);
     const deletedUser = await User.findByIdAndDelete(id);
     return deletedUser;
-  } catch {
-    console.log("not found");
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 

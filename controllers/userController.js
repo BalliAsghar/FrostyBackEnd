@@ -19,8 +19,8 @@ exports.getUsers = async (req, res, next) => {
 exports.postUser = async (req, res, next) => {
   const { body } = req;
   try {
-    const response = await insertUser(body);
-    res.status(201).send({ response });
+    const User = await insertUser(body);
+    res.status(201).send({ User });
   } catch (err) {
     next(err);
   }

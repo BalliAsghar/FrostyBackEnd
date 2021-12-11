@@ -2,17 +2,16 @@ const Event = require("../config/databaseConfig/event.schema.js");
 
 exports.fetchEvents = async (query) => {
   try {
-    const { title, creator, eventStart } = query;
-    const filterQuery = {};
-    if (title) filterQuery.title = title;
-    if (creator) filterQuery.creator = creator;
-    if (eventStart) filterQuery.eventStart = eventStart;
-    console.log(filterQuery);
+    const { title, creator, description } = query;
+    const queryObj = {};
+    if (title) queryObj.title = title;
+    if (creator) queryObj.creator = creator;
+    if (description) queryObj.description = description;
+    const events = await Event.find(queryObj);
 
-    const events = await Event.find(filterQuery);
-    if (events.length > 0) return events;
+    if (events) return events;
 
-    return Promise.reject({ statusCode: 404, message: "No events found" });
+    return Promise.reject({ statusCode: 404, message: "No event found" });
   } catch (err) {
     return Promise.reject(err);
   }
@@ -30,8 +29,10 @@ exports.insertEvent = async (body) => {
 
 exports.fetchEvent = async (id) => {
   try {
-    const event = await Event.findOne({ eventId: id });
-    return event;
+    console.log(id);
+    const event = await Event.find({ eventId: id });
+    if (event) return event;
+    return Promise.reject({ statusCode: 404, message: "No event found" });
   } catch (err) {
     return Promise.reject(err);
   }
