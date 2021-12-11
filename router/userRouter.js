@@ -19,11 +19,11 @@ userRouter.get("/", getUsers);
 
 /**
  * @Method POST
- * @Route /api/users
+ * @Route /api/users/register
  * @Function postUser()
  * @Description Create a new user
  */
-userRouter.post("/", postUser);
+userRouter.post("/register", postUser);
 
 /**
  * @Route /api/users/:user_id
