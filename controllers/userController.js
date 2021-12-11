@@ -6,6 +6,7 @@ const {
   removeUser,
   fetchEventsByUsername,
   signInUser,
+  getUserProfile,
 } = require("../models/userModel.js");
 
 exports.getUsers = async (req, res, next) => {
@@ -73,6 +74,15 @@ exports.loginUser = async (req, res, next) => {
     const { username, password } = req.body;
     const response = await signInUser(username, password);
     res.status(200).send({ response });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.userProfile = async (req, res, next) => {
+  try {
+    const user = await getUserProfile(req.user.id);
+    res.status(200).send({ user });
   } catch (error) {
     next(error);
   }

@@ -42,7 +42,7 @@ exports.getEvent = async (req, res, next) => {
 exports.deleteEvent = async (req, res, next) => {
   try {
     const { eventId } = req.params;
-    const response = await removeEvent(eventId);
+    const response = await removeEvent(eventId, req.user);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -74,7 +74,7 @@ exports.patchEvent = async (req, res, next) => {
   const { eventId } = req.params;
   const { body } = req;
   try {
-    const updatedEvent = await updateEvent(eventId, body);
+    const updatedEvent = await updateEvent(eventId, body, req.user, req.files);
     res.status(200).json({ updatedEvent });
   } catch (error) {
     next(error);

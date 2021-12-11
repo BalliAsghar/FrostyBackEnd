@@ -154,3 +154,22 @@ exports.signInUser = async (username, password) => {
     return Promise.reject(err);
   }
 };
+
+exports.getUserProfile = async (id) => {
+  try {
+    const user = await User.findById(id).populate(["attendedEvents"]).exec();
+
+    if (!user) {
+      return Promise.reject({
+        statusCode: 404,
+        message: "User not found",
+      });
+    }
+    return {
+      ...user._doc,
+      password: undefined,
+    };
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};

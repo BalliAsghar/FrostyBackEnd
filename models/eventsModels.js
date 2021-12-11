@@ -1,4 +1,6 @@
 const Event = require("../config/databaseConfig/event.schema.js");
+const User = require("../config/databaseConfig/user.schema.js");
+
 const uploadToS3 = require("../utils/uploadToS3");
 // ✅
 exports.fetchEvents = async (query) => {
@@ -20,7 +22,7 @@ exports.fetchEvents = async (query) => {
     return Promise.reject(err);
   }
 };
-
+// ✅
 exports.insertEvent = async (body, files, user) => {
   try {
     // check if body have all the required fields
@@ -48,12 +50,19 @@ exports.insertEvent = async (body, files, user) => {
     // save the event
     const savedEvent = await newEvent.save();
 
+    // add the event to the user hosted events
+    await User.findOneAndUpdate(
+      { _id: user.id },
+      { $addToSet: { hostedEvents: savedEvent.eventId } },
+      { new: true }
+    );
+
     return savedEvent;
   } catch (err) {
     return Promise.reject(err);
   }
 };
-
+// ✅
 exports.fetchEvent = async (id) => {
   try {
     const event = await Event.findOne({ eventId: id })
@@ -67,26 +76,62 @@ exports.fetchEvent = async (id) => {
     return Promise.reject(err);
   }
 };
-
-exports.removeEvent = async (id) => {
+// ✅
+exports.removeEvent = async (id, user) => {
   try {
-    const event = await Event.findById(id);
-    const deletedEvent = await Event.findByIdAndDelete(id);
-    return deletedEvent;
-  } catch (err) {
-    return Promise.reject(err);
+    const event = await Event.findOne({ eventId: id });
+    if (!event)
+      return Promise.reject({ statusCode: 404, message: "No event found" });
+
+    // check if the user is the creator of the event
+    if (event.creator.toString() !== user.id)
+      return Promise.reject({
+        statusCode: 400,
+        message: "You are not the creator of this event",
+      });
+
+    await Event.findOneAndDelete({ eventId: id });
+    await User.findOneAndUpdate(
+      { _id: user.id },
+      { $pull: { hostedEvents: id } },
+      { new: true }
+    );
+
+    return Promise.resolve({
+      statusCode: 200,
+      message: "Event deleted successfully",
+    });
+  } catch (error) {
+    return Promise.reject(error);
   }
 };
-
-exports.updateEvent = async (eventId, body) => {
+// ✅
+exports.updateEvent = async (eventId, body, user, files) => {
   try {
-    console.log(body);
+    const event = await Event.findOne({ eventId: eventId });
+    if (!event) {
+      return Promise.reject({ statusCode: 404, message: "No event found" });
+    }
+
+    // check if the user is the creator of the event
+    if (event.creator.toString() !== user.id)
+      return Promise.reject({
+        statusCode: 400,
+        message: "You are not the creator of this event",
+      });
+
+    if (files) {
+      const S3Res = await uploadToS3(files);
+      const eventImage = S3Res.Location;
+      body.eventImage = eventImage;
+    }
+
     const updatedEvent = await Event.findOneAndUpdate(
       { eventId: eventId },
       body,
       { new: true }
     );
-    console.log(updatedEvent);
+
     if (!updatedEvent) {
       return Promise.reject({
         statusCode: 400,
@@ -98,7 +143,7 @@ exports.updateEvent = async (eventId, body) => {
     return Promise.reject(error);
   }
 };
-
+// ✅
 exports.perticipateInEvent = async (eventId, user) => {
   try {
     const event = await Event.findOne({ eventId: eventId });
@@ -109,9 +154,24 @@ exports.perticipateInEvent = async (eventId, user) => {
       });
     }
 
+    // check if the user is the creator of the event
+    if (event.creator.toString() === user.id)
+      return Promise.reject({
+        statusCode: 400,
+        message: "You are the creator of this event",
+      });
+
+    // add the user to the participants array
     const updatedEvent = await Event.findOneAndUpdate(
       { eventId: eventId },
       { $addToSet: { participants: user.id } },
+      { new: true }
+    );
+
+    // add the event to the user attendedEvents
+    await User.findOneAndUpdate(
+      { _id: user.id },
+      { $addToSet: { attendedEvents: eventId } },
       { new: true }
     );
 
@@ -120,7 +180,7 @@ exports.perticipateInEvent = async (eventId, user) => {
     return Promise.reject(error);
   }
 };
-
+// ✅
 exports.deletePerticipateInEvent = async (eventId, user) => {
   try {
     const event = await Event.findOne({ eventId: eventId });
@@ -130,6 +190,13 @@ exports.deletePerticipateInEvent = async (eventId, user) => {
         message: "No event found",
       });
     }
+
+    // check if the user is the creator of the event
+    if (event.creator.toString() === user.id)
+      return Promise.reject({
+        statusCode: 400,
+        message: "You are the creator of this event",
+      });
 
     const updatedEvent = await Event.findOneAndUpdate(
       { eventId: eventId },

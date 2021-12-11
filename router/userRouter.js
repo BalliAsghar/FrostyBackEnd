@@ -7,15 +7,19 @@ const {
   deleteUser,
   getEventsByUsername,
   loginUser,
+  userProfile,
 } = require("../controllers/userController");
+const auth = require("../auth/authMiddleware");
 
 /**
- * @Method GET
- * @Route /api/users
- * @Function getUsers()
- * @Description Get all users
+ * @Method POST
+ * @Route /api/users/login
+ * @Function loginUser()
+ * @Description Login a user by username and password
+ * @body username
+ * @body password
  */
-userRouter.get("/", getUsers);
+userRouter.post("/login", loginUser);
 
 /**
  * @Method POST
@@ -24,6 +28,14 @@ userRouter.get("/", getUsers);
  * @Description Create a new user
  */
 userRouter.post("/register", postUser);
+
+/**
+ * @Method GET
+ * @Route /api/users
+ * @Function getUsers()
+ * @Description Get all users
+ */
+userRouter.get("/", auth, getUsers);
 
 /**
  * @Route /api/users/:user_id
@@ -41,7 +53,7 @@ userRouter.get("/:username", getUser);
  * @Description Update a user by id
  * @Param id
  */
-userRouter.patch("/:id", patchUser);
+userRouter.patch("/:id", auth, patchUser);
 
 /**
  * @Method DELETE
@@ -50,7 +62,7 @@ userRouter.patch("/:id", patchUser);
  * @Description Delete a user by id
  * @Param id
  */
-userRouter.delete("/:id", deleteUser);
+userRouter.delete("/:id", auth, deleteUser);
 
 /**
  * @Method GET
@@ -59,16 +71,14 @@ userRouter.delete("/:id", deleteUser);
  * @Description get events by username
  * @Param username
  */
-userRouter.get("/:username/events", getEventsByUsername);
+userRouter.get("/:username/events", auth, getEventsByUsername);
 
 /**
- * @Method POST
- * @Route /api/users/login
- * @Function loginUser()
- * @Description Login a user by username and password
- * @body username
- * @body password
+ * @Method GET
+ * @Route /api/users/profile
+ * @Function userProfile()
+ * @Description Get user profile
  */
-userRouter.post("/login", loginUser);
+userRouter.get("/profile/me", auth, userProfile);
 
 module.exports = userRouter;
