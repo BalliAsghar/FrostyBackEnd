@@ -20,7 +20,7 @@ exports.getEvents = async (req, res, next) => {
 exports.postEvent = async (req, res, next) => {
   const { body } = req;
   try {
-    const response = await insertEvent(body);
+    const response = await insertEvent(body, req.files, req.user);
     res.status(201).json(response);
   } catch (err) {
     next(err);

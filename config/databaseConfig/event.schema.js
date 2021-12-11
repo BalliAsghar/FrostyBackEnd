@@ -11,6 +11,8 @@ const EventSchema = mongoose.Schema({
   eventStart: { type: String },
   eventEnd: { type: String },
   location: { type: Number, ref: "Location" },
+  eventImage: { type: String },
+  eventPhotos: [{ type: String }],
   categories: [{ type: String, ref: "Category" }],
   tags: [{ type: String }],
   dateCreated: { type: Date, default: Date.now },

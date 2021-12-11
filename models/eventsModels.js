@@ -1,4 +1,5 @@
 const Event = require("../config/databaseConfig/event.schema.js");
+const uploadToS3 = require("../utils/uploadToS3");
 // ✅
 exports.fetchEvents = async (query) => {
   try {
@@ -17,9 +18,34 @@ exports.fetchEvents = async (query) => {
   }
 };
 
-exports.insertEvent = async (body) => {
+exports.insertEvent = async (body, files, user) => {
   try {
-    //
+    // check if body have all the required fields
+    const { title, description, eventStart, eventEnd } = body;
+    if (!title || !description || !eventStart || !eventEnd) {
+      return Promise.reject({
+        statusCode: 400,
+        message: "Please provide all the required fields",
+      });
+    }
+
+    // cheack if the user has send image
+    const S3Res = files ? await uploadToS3(files) : null;
+
+    // grab the image url from S3
+    const eventImage = S3Res ? S3Res.Location : null;
+
+    // create a new event
+    const newEvent = new Event({
+      ...body,
+      eventImage,
+      creator: user.username,
+    });
+
+    // save the event
+    const savedEvent = await newEvent.save();
+
+    return savedEvent;
   } catch (err) {
     return Promise.reject(err);
   }
