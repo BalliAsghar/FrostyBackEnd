@@ -32,7 +32,7 @@ userRouter.post("/register", postUser);
  * @Description Get a user by id
  * @Param id
  */
-userRouter.get("/:user_id", getUser);
+userRouter.get("/:username", getUser);
 
 /**
  * @Method PATCH

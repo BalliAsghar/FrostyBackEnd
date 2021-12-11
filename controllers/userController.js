@@ -28,9 +28,9 @@ exports.postUser = async (req, res, next) => {
 };
 
 exports.getUser = async (req, res, next) => {
-  const { user_id } = req.params;
+  const { username } = req.params;
   try {
-    const user = await fetchUser(user_id);
+    const user = await fetchUser(username);
     res.status(200).send({ user });
   } catch (err) {
     next(err);

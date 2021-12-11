@@ -65,9 +65,9 @@ exports.insertUser = async (body, files) => {
   }
 };
 
-exports.fetchUser = async (id) => {
+exports.fetchUser = async (username) => {
   try {
-    const user = await User.findById(id).exec();
+    const user = await User.findOne({ username: username }).exec();
 
     if (!user) {
       return Promise.reject({ statusCode: 404, message: "User not found" });
