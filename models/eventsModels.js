@@ -56,8 +56,12 @@ exports.insertEvent = async (body, files, user) => {
 
 exports.fetchEvent = async (id) => {
   try {
-    const event = await Event.find({ eventId: id });
+    const event = await Event.findOne({ eventId: id })
+      .populate("creator", "displayName avatarUrl username")
+      .populate("participants", "displayName avatarUrl username");
+
     if (event) return event;
+
     return Promise.reject({ statusCode: 404, message: "No event found" });
   } catch (err) {
     return Promise.reject(err);
