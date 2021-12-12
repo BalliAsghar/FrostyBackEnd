@@ -14,21 +14,22 @@ exports.getComments = (req, res) => {
 // Get a single comment
 exports.getComment = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const comment = await fetchComment(id);
+    const { eventId } = req.params;
+    const comment = await fetchComment(eventId, req.user);
     res.status(200).json(comment);
   } catch (err) {
-    next(error);
+    next(err);
   }
 };
 
 exports.postComment = async (req, res, next) => {
   try {
     const { body } = req;
-    const newComment = await insertCommentToEvent(body);
+    const { eventId } = req.params;
+    const newComment = await insertCommentToEvent(eventId, body, req.user);
     res.status(201).json(newComment);
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -37,8 +38,8 @@ exports.deleteComment = async (req, res, next) => {
     const { id } = req.params;
     const deletedComment = await removeComment(id);
     res.status(200).json({ deletedComment });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -48,7 +49,7 @@ exports.updateComment = async (req, res, next) => {
     const { body } = req;
     const updatedComment = await changeComment(id, body);
     res.status(200).json({ updatedComment });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };

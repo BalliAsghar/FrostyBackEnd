@@ -1,25 +1,9 @@
 const Comment = require("../config/databaseConfig/comment.schema");
 const Event = require("../config/databaseConfig/event.schema");
 
-exports.fetchComments = async () => {
+exports.fetchComment = async (id, user) => {
   try {
-    const comments = await Comment.find({});
-    if (comments.length === 0) {
-      return Promise.reject({ statusCode: 404, message: "No comments found" });
-    }
-    return comments;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-exports.fetchComment = async (id) => {
-  try {
-    const comment = await Comment.findById(id);
-    if (!comment) {
-      return Promise.reject({ statusCode: 404, message: "No comment found" });
-    }
-    return comment;
+    return "Hello";
   } catch (error) {
     return Promise.reject(error);
   }
@@ -36,14 +20,27 @@ exports.fetchEventComments = async (eventId) => {
   }
 };
 
-exports.insertCommentToEvent = async (body) => {
+exports.insertCommentToEvent = async (eventId, body, user) => {
   try {
-    const { eventId } = body;
-    const event = await Event.findOne({ eventId });
+    const { commentBody } = body;
+    const event = await Event.findOne({ eventId: eventId });
     if (!event)
       return Promise.reject({ statusCode: 404, message: "No event found" });
-    const newComment = new Comment(body);
-    const comment = await newComment.save();
+    const comment = await Comment.create({
+      eventId,
+      username: user.id,
+      commentBody,
+    });
+
+    // push comment to event comments array
+    await Event.findOneAndUpdate(
+      { eventId: eventId },
+      {
+        $push: { comments: comment._id },
+      },
+      { new: true }
+    );
+
     return comment;
   } catch (error) {
     return Promise.reject(error);

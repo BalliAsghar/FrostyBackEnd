@@ -69,7 +69,16 @@ exports.fetchEvent = async (id) => {
   try {
     const event = await Event.findOne({ eventId: id })
       .populate("creator", "displayName avatarUrl username")
-      .populate("participants", "displayName avatarUrl username");
+      .populate("participants", "displayName avatarUrl username")
+
+      // nested populate for comments and votes
+      .populate({
+        path: "comments",
+        populate: {
+          path: "username",
+          select: "displayName avatarUrl username",
+        },
+      });
 
     if (event) return event;
 
