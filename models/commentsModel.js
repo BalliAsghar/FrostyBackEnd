@@ -53,11 +53,17 @@ exports.insertCommentToEvent = async (eventId, body, user) => {
   }
 };
 
-exports.removeComment = async (id) => {
+exports.removeComment = async (id, user) => {
   try {
-    const comment = await Comment.findByIdAndDelete(id);
+    const comment = await Comment.findById(id);
     if (!comment)
-      return Promise.reject({ statusCode: 404, message: "No comment found" });
+      return Promise.reject({ statusCode: 404, message: "Comment not found" });
+    if (comment.username.toString() !== user.id)
+      return Promise.reject({
+        statusCode: 403,
+        message: "You are not allowed to delete this comment",
+      });
+    await Comment.findByIdAndDelete(id);
     return comment;
   } catch (error) {
     return Promise.reject(error);
