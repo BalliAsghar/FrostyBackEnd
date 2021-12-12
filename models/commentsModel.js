@@ -70,34 +70,18 @@ exports.removeComment = async (id, user) => {
   }
 };
 
-exports.changeComment = async (id, body) => {
+exports.upVote = async (id, user) => {
   try {
-    const { newCommentBody, newVote } = body;
-    if (newVote) {
-      const vote = await Comment.findByIdAndUpdate(
-        id,
-        {
-          $inc: { votes: newVote },
-        },
-        { new: true }
-      );
-      return vote;
-    }
-    if (newCommentBody) {
-      const comment = await Comment.findByIdAndUpdate(
-        id,
-        {
-          commentBody: newCommentBody,
-        },
-        { new: true }
-      );
-      return comment;
-    }
-    return Promise.reject({
-      statusCode: 400,
-      message: "No comment body or vote provided",
-    });
-  } catch (error) {
-    return Promise.reject(error);
-  }
+    const comment = await Comment.findById(id);
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "Comment not found" });
+
+    // check if user is comment owner
+    if (comment.username.toString() == user.id)
+      return Promise.reject({
+        statusCode: 403,
+        message: "You are crazy! You can't upvote your own comment",
+      });
+    // check if user has already upvoted comment
+  } catch (error) {}
 };

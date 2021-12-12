@@ -46,8 +46,7 @@ exports.deleteComment = async (req, res, next) => {
 exports.updateComment = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { body } = req;
-    const updatedComment = await changeComment(id, body);
+    const updatedComment = await upVote(id, req.user);
     res.status(200).json({ updatedComment });
   } catch (err) {
     next(err);
