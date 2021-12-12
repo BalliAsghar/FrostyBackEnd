@@ -32,7 +32,7 @@ exports.getUser = async (req, res, next) => {
   const { username } = req.params;
   try {
     const user = await fetchUser(username);
-    res.status(200).send({ user });
+    res.status(200).send(user);
   } catch (err) {
     next(err);
   }

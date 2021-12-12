@@ -72,7 +72,11 @@ exports.fetchUser = async (username) => {
     if (!user) {
       return Promise.reject({ statusCode: 404, message: "User not found" });
     }
-    return user;
+    // return user without the password property
+    return {
+      ...user._doc,
+      password: undefined,
+    };
   } catch (err) {
     return Promise.reject(err);
   }
