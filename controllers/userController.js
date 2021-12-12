@@ -50,10 +50,9 @@ exports.patchUser = async (req, res, next) => {
 };
 
 exports.deleteUser = async (req, res, next) => {
-  const { user_id } = req.params;
   try {
-    const response = await removeUser(user_id);
-    console.log(response);
+    const response = await removeUser(req.user);
+    res.status(200).send({ response });
   } catch (err) {
     next(err);
   }

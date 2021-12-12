@@ -79,6 +79,12 @@
  * @Query  - None
  * @Body   - None
  * @Auth   - Token
+ * @Response -
+ *  {
+    "response": {
+        "message": "User deleted"
+    }
+}
  */
 
 // -----------------------------------------------------

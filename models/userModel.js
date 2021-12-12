@@ -92,11 +92,12 @@ exports.updateUser = async (id, body) => {
   }
 };
 
-exports.removeUser = async (id) => {
+exports.removeUser = async (user) => {
   try {
-    const user = await User.findById(id);
-    const deletedUser = await User.findByIdAndDelete(id);
-    return deletedUser;
+    await User.findByIdAndDelete(user.id);
+    return {
+      message: "User deleted",
+    };
   } catch (err) {
     return Promise.reject(err);
   }
