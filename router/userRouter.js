@@ -56,15 +56,6 @@ userRouter.get("/:username", getUser);
 userRouter.patch("/:id", auth, patchUser);
 
 /**
- * @Method DELETE
- * @Route /api/users/:id
- * @Function deleteUser()
- * @Description Delete a user by id
- * @Param id
- */
-userRouter.delete("/:id", auth, deleteUser);
-
-/**
  * @Method GET
  * @Route /api/users/:username/events
  * @Function getEventsByUsername()
@@ -73,6 +64,14 @@ userRouter.delete("/:id", auth, deleteUser);
  */
 userRouter.get("/:username/events", auth, getEventsByUsername);
 
+/**
+ * @Method DELETE
+ * @Route /api/users/:id
+ * @Function deleteUser()
+ * @Description Delete a user by id
+ * @Param id
+ */
+userRouter.delete("/profile/me", auth, deleteUser);
 /**
  * @Method GET
  * @Route /api/users/profile
