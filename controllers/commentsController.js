@@ -14,8 +14,8 @@ exports.getComments = (req, res) => {
 // Get a single comment
 exports.getComment = async (req, res, next) => {
   try {
-    const { eventId } = req.params;
-    const comment = await fetchComment(eventId, req.user);
+    const { id } = req.params;
+    const comment = await fetchComment(id);
     res.status(200).json(comment);
   } catch (err) {
     next(err);

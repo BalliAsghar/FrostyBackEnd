@@ -1,14 +1,20 @@
 const Comment = require("../config/databaseConfig/comment.schema");
 const Event = require("../config/databaseConfig/event.schema");
 
-exports.fetchComment = async (id, user) => {
+exports.fetchComment = async (Id) => {
   try {
-    return "Hello";
+    const comment = await Comment.findById(Id).populate(
+      "eventId",
+      "title eventId"
+    );
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "Comment not found" });
+
+    return comment;
   } catch (error) {
     return Promise.reject(error);
   }
 };
-
 exports.fetchEventComments = async (eventId) => {
   try {
     const comments = await Comment.find({ eventId });
@@ -27,7 +33,7 @@ exports.insertCommentToEvent = async (eventId, body, user) => {
     if (!event)
       return Promise.reject({ statusCode: 404, message: "No event found" });
     const comment = await Comment.create({
-      eventId,
+      eventId: event._id,
       username: user.id,
       commentBody,
     });
