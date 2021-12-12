@@ -53,7 +53,7 @@ exports.insertEvent = async (body, files, user) => {
     // add the event to the user hosted events
     await User.findOneAndUpdate(
       { _id: user.id },
-      { $addToSet: { hostedEvents: savedEvent.eventId } },
+      { $addToSet: { hostedEvents: savedEvent._id } },
       { new: true }
     );
 
@@ -93,7 +93,7 @@ exports.removeEvent = async (id, user) => {
     await Event.findOneAndDelete({ eventId: id });
     await User.findOneAndUpdate(
       { _id: user.id },
-      { $pull: { hostedEvents: id } },
+      { $pull: { hostedEvents: event._id } },
       { new: true }
     );
 
@@ -171,7 +171,7 @@ exports.perticipateInEvent = async (eventId, user) => {
     // add the event to the user attendedEvents
     await User.findOneAndUpdate(
       { _id: user.id },
-      { $addToSet: { attendedEvents: eventId } },
+      { $addToSet: { attendedEvents: event._id } },
       { new: true }
     );
 

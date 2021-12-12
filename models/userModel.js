@@ -157,7 +157,10 @@ exports.signInUser = async (username, password) => {
 
 exports.getUserProfile = async (id) => {
   try {
-    const user = await User.findById(id).populate(["attendedEvents"]).exec();
+    const user = await User.findById(id)
+      .populate("attendedEvents", "eventId title description eventImage")
+      .populate("hostedEvents", "eventId title description eventImage")
+      .exec();
 
     if (!user) {
       return Promise.reject({
