@@ -4,8 +4,16 @@ const {
   postComment,
   deleteComment,
   updateComment,
+  getCommentsByEvent,
 } = require("../controllers/commentsController");
 const auth = require("../auth/authMiddleware");
+
+/**
+ * @METHOD GET
+ * @ROUTE /api/comments/:eventId
+ * @DESCRIPTION Get all comments for a specific event
+ */
+commentsRouter.get("/event/:eventId", auth, getCommentsByEvent);
 
 /**
  * @METHOD GET
@@ -34,12 +42,5 @@ commentsRouter.delete("/:id", auth, deleteComment);
  * @DESCRIPTION UPDATE A Comment BY ID
  */
 commentsRouter.patch("/:id", auth, updateComment);
-
-// /**
-//  * @METHOD PATCH
-//  * @ROUTE /api/comments/:ID/vote
-//  * @DESCRIPTION UPDATE A Comment BY ID
-//  */
-//  commentsRouter.route("/:id/vote").patch(updateComment);
 
 module.exports = commentsRouter;

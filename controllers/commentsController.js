@@ -4,7 +4,7 @@ const {
   fetchComment,
   insertCommentToEvent,
   removeComment,
-  changeComment,
+  upVote,
 } = require("../models/commentsModel");
 
 exports.getComments = (req, res) => {
@@ -48,6 +48,16 @@ exports.updateComment = async (req, res, next) => {
     const { id } = req.params;
     const updatedComment = await upVote(id, req.user);
     res.status(200).json({ updatedComment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCommentsByEvent = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const comments = await fetchComments(eventId);
+    res.status(200).json(comments);
   } catch (err) {
     next(err);
   }

@@ -83,5 +83,36 @@ exports.upVote = async (id, user) => {
         message: "You are crazy! You can't upvote your own comment",
       });
     // check if user has already upvoted comment
-  } catch (error) {}
+    if (comment.upVoters.includes(user.id))
+      return Promise.reject({
+        statusCode: 403,
+        message: "You have already upvoted this comment",
+      });
+
+    // upvote comment
+    await Comment.findByIdAndUpdate(
+      id,
+      {
+        $push: { upVoters: user.id },
+        $inc: { votes: 1 },
+      },
+      { new: true }
+    );
+
+    return comment;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+exports.fetchComments = async (eventId) => {
+  try {
+    console.log(eventId);
+    const comments = await Comment.find({ _id: eventId });
+    if (comments.length === 0)
+      return Promise.reject({ statusCode: 404, message: "No comments found" });
+    return comments;
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };

@@ -6,6 +6,7 @@ const commentsSchema = mongoose.Schema({
   dateCreated: { type: Date, default: Date.now },
   eventId: { type: mongoose.Schema.Types.ObjectId, ref: "Event" },
   votes: { type: Number, default: 0 },
+  upVoters: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 module.exports = Comment = mongoose.model("Comment", commentsSchema);
