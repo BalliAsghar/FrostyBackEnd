@@ -82,11 +82,36 @@ exports.fetchUser = async (username) => {
   }
 };
 
-exports.updateUser = async (id, body) => {
+exports.updateUser = async (user, body, files) => {
   try {
-    await User.findByIdAndUpdate(id, body);
-    const updatedUser = User.findById(id);
-    return updatedUser;
+    // check if body is empty
+    if (Object.keys(body).length === 0) {
+      return Promise.reject({
+        statusCode: 400,
+        message: "No body was sent",
+      });
+    }
+    const { email, displayName, pronouns } = body;
+    // check if the user has send image
+    const S3Res = files ? await uploadToS3(files) : null;
+    // grab the image url from the S3 response
+    const avatarUrl = S3Res ? S3Res.Location : null;
+    // update the user
+    const updatedUser = await User.findByIdAndUpdate(
+      user.id,
+      {
+        email,
+        displayName,
+        pronouns,
+        avatarUrl,
+      },
+      { new: true }
+    );
+    // return the updated user without the password property
+    return {
+      ...updatedUser._doc,
+      password: undefined,
+    };
   } catch (err) {
     return Promise.reject(err);
   }

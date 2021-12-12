@@ -39,10 +39,9 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.patchUser = async (req, res, next) => {
-  const { user_id } = req.params;
   const { body } = req;
   try {
-    const updatedUser = await updateUser(user_id, body);
+    const updatedUser = await updateUser(req.user, body, req.files);
     res.status(200).send({ updatedUser });
   } catch (err) {
     next(err);

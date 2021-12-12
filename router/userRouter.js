@@ -47,15 +47,6 @@ userRouter.get("/", auth, getUsers);
 userRouter.get("/:username", getUser);
 
 /**
- * @Method PATCH
- * @Route /api/users/:id
- * @Function patchUser()
- * @Description Update a user by id
- * @Param id
- */
-userRouter.patch("/:id", auth, patchUser);
-
-/**
  * @Method GET
  * @Route /api/users/:username/events
  * @Function getEventsByUsername()
@@ -64,11 +55,22 @@ userRouter.patch("/:id", auth, patchUser);
  */
 userRouter.get("/:username/events", auth, getEventsByUsername);
 
+//  ------------------- Auth implementation  done-------------------------
+
+/**
+ * @Method PATCH
+ * @Route /api/users/profile/me
+ * @Function patchUser()
+ * @Description Update a logged in user
+ * @Param id
+ */
+userRouter.patch("/profile/me", auth, patchUser);
+
 /**
  * @Method DELETE
  * @Route /api/users/:id
  * @Function deleteUser()
- * @Description Delete a user by id
+ * @Description Delete a logged in user
  * @Param id
  */
 userRouter.delete("/profile/me", auth, deleteUser);
