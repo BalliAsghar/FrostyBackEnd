@@ -5,34 +5,35 @@ const {
   deleteComment,
   updateComment,
 } = require("../controllers/commentsController");
+const auth = require("../auth/authMiddleware");
 
 /**
  * @METHOD GET
  * @ROUTE /api/comments/:id
  * @DESCRIPTION Get Single Comment by ID
  */
-commentsRouter.route("/:id").get(getComment);
+commentsRouter.get("/:id", auth, getComment);
 
 /**
  * @METHOD POST
- * @ROUTE /api/comments
+ * @ROUTE /api/comments/:eventId
  * @DESCRIPTION Post Comment
  */
-commentsRouter.route("/").post(postComment);
+commentsRouter.post("/:eventId", auth, postComment);
 
 /**
  * @METHOD DELETE
  * @ROUTE /api/comments/:ID
  * @DESCRIPTION DELETE A Comment
  */
-commentsRouter.route("/:id").delete(deleteComment);
+commentsRouter.delete("/:id", auth, deleteComment);
 
 /**
  * @METHOD PATCH
  * @ROUTE /api/comments/:ID
  * @DESCRIPTION UPDATE A Comment BY ID
  */
-commentsRouter.route("/:id").patch(updateComment);
+commentsRouter.patch("/:id", auth, updateComment);
 
 // /**
 //  * @METHOD PATCH
