@@ -5,11 +5,12 @@ const uploadToS3 = require("../utils/uploadToS3");
 // ✅
 exports.fetchEvents = async (query) => {
   try {
-    const { title, creator, description } = query;
+    const { title, creator, description, category } = query;
     const queryObj = {};
     if (title) queryObj.title = title;
     if (creator) queryObj.creator = creator;
     if (description) queryObj.description = description;
+    if (category) queryObj.category = category;
 
     const events = await Event.find(queryObj)
       .populate("creator", "displayName avatarUrl username")
@@ -25,6 +26,7 @@ exports.fetchEvents = async (query) => {
 // ✅
 exports.insertEvent = async (body, files, user) => {
   try {
+    console.log(body);
     // check if body have all the required fields
     const { title, description, eventStart, eventEnd } = body;
     if (!title || !description || !eventStart || !eventEnd) {
