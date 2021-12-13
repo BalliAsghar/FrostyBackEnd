@@ -4,7 +4,7 @@ const {
   fetchComment,
   insertCommentToEvent,
   removeComment,
-  changeComment,
+  upVote,
 } = require("../models/commentsModel");
 
 exports.getComments = (req, res) => {
@@ -18,37 +18,47 @@ exports.getComment = async (req, res, next) => {
     const comment = await fetchComment(id);
     res.status(200).json(comment);
   } catch (err) {
-    next(error);
+    next(err);
   }
 };
 
 exports.postComment = async (req, res, next) => {
   try {
     const { body } = req;
-    const newComment = await insertCommentToEvent(body);
+    const { eventId } = req.params;
+    const newComment = await insertCommentToEvent(eventId, body, req.user);
     res.status(201).json(newComment);
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
 exports.deleteComment = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deletedComment = await removeComment(id);
+    const deletedComment = await removeComment(id, req.user);
     res.status(200).json({ deletedComment });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
 exports.updateComment = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { body } = req;
-    const updatedComment = await changeComment(id, body);
+    const updatedComment = await upVote(id, req.user);
     res.status(200).json({ updatedComment });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCommentsByEvent = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const comments = await fetchComments(eventId);
+    res.status(200).json(comments);
+  } catch (err) {
+    next(err);
   }
 };

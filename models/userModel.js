@@ -26,6 +26,14 @@ exports.insertUser = async (body, files) => {
         message: "User already exists",
       });
 
+    // check if email is unique
+    const email = await User.findOne({ email: body.email });
+    if (email)
+      return Promise.reject({
+        statusCode: 400,
+        message: "Email already exists",
+      });
+
     // cheack if the user has send image
     const S3Res = files ? await uploadToS3(files) : null;
 

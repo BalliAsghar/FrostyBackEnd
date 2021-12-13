@@ -1,30 +1,20 @@
 const Comment = require("../config/databaseConfig/comment.schema");
 const Event = require("../config/databaseConfig/event.schema");
 
-exports.fetchComments = async () => {
+exports.fetchComment = async (Id) => {
   try {
-    const comments = await Comment.find({});
-    if (comments.length === 0) {
-      return Promise.reject({ statusCode: 404, message: "No comments found" });
-    }
-    return comments;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
+    const comment = await Comment.findById(Id).populate(
+      "eventId",
+      "title eventId"
+    );
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "Comment not found" });
 
-exports.fetchComment = async (id) => {
-  try {
-    const comment = await Comment.findById(id);
-    if (!comment) {
-      return Promise.reject({ statusCode: 404, message: "No comment found" });
-    }
     return comment;
   } catch (error) {
     return Promise.reject(error);
   }
 };
-
 exports.fetchEventComments = async (eventId) => {
   try {
     const comments = await Comment.find({ eventId });
@@ -36,58 +26,95 @@ exports.fetchEventComments = async (eventId) => {
   }
 };
 
-exports.insertCommentToEvent = async (body) => {
+exports.insertCommentToEvent = async (eventId, body, user) => {
   try {
-    const { eventId } = body;
-    const event = await Event.findOne({ eventId });
+    const { commentBody } = body;
+    const event = await Event.findOne({ eventId: eventId });
     if (!event)
       return Promise.reject({ statusCode: 404, message: "No event found" });
-    const newComment = new Comment(body);
-    const comment = await newComment.save();
-    return comment;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-exports.removeComment = async (id) => {
-  try {
-    const comment = await Comment.findByIdAndDelete(id);
-    if (!comment)
-      return Promise.reject({ statusCode: 404, message: "No comment found" });
-    return comment;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-exports.changeComment = async (id, body) => {
-  try {
-    const { newCommentBody, newVote } = body;
-    if (newVote) {
-      const vote = await Comment.findByIdAndUpdate(
-        id,
-        {
-          $inc: { votes: newVote },
-        },
-        { new: true }
-      );
-      return vote;
-    }
-    if (newCommentBody) {
-      const comment = await Comment.findByIdAndUpdate(
-        id,
-        {
-          commentBody: newCommentBody,
-        },
-        { new: true }
-      );
-      return comment;
-    }
-    return Promise.reject({
-      statusCode: 400,
-      message: "No comment body or vote provided",
+    const comment = await Comment.create({
+      eventId: event._id,
+      username: user.id,
+      refId: eventId,
+      commentBody,
     });
+
+    // push comment to event comments array
+    await Event.findOneAndUpdate(
+      { eventId: eventId },
+      {
+        $push: { comments: comment._id },
+      },
+      { new: true }
+    );
+
+    return comment;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+exports.removeComment = async (id, user) => {
+  try {
+    const comment = await Comment.findById(id);
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "Comment not found" });
+    if (comment.username.toString() !== user.id)
+      return Promise.reject({
+        statusCode: 403,
+        message: "You are not allowed to delete this comment",
+      });
+    await Comment.findByIdAndDelete(id);
+    return comment;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+exports.upVote = async (id, user) => {
+  try {
+    const comment = await Comment.findById(id);
+    if (!comment)
+      return Promise.reject({ statusCode: 404, message: "Comment not found" });
+
+    // check if user is comment owner
+    if (comment.username.toString() == user.id)
+      return Promise.reject({
+        statusCode: 403,
+        message: "You are crazy! You can't upvote your own comment",
+      });
+    // check if user has already upvoted comment
+    if (comment.upVoters.includes(user.id))
+      return Promise.reject({
+        statusCode: 403,
+        message: "You have already upvoted this comment",
+      });
+
+    // upvote comment
+    await Comment.findByIdAndUpdate(
+      id,
+      {
+        $push: { upVoters: user.id },
+        $inc: { votes: 1 },
+      },
+      { new: true }
+    );
+
+    return comment;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+exports.fetchComments = async (eventId) => {
+  try {
+    console.log(eventId);
+    const comments = await Comment.find({ refId: eventId })
+      .populate("username", "displayName")
+      .exec();
+    if (comments.length === 0)
+      return Promise.reject({ statusCode: 404, message: "No comments found" });
+    return comments;
   } catch (error) {
     return Promise.reject(error);
   }
