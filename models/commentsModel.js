@@ -34,7 +34,7 @@ exports.insertCommentToEvent = async (eventId, body, user) => {
       return Promise.reject({ statusCode: 404, message: "No event found" });
     const comment = await Comment.create({
       eventId: event._id,
-      username: user.id,
+      user: user.id,
       refId: eventId,
       commentBody,
     });
@@ -110,7 +110,7 @@ exports.fetchComments = async (eventId) => {
   try {
     console.log(eventId);
     const comments = await Comment.find({ refId: eventId })
-      .populate("username", "displayName")
+      .populate("user", "displayName username")
       .exec();
     if (comments.length === 0)
       return Promise.reject({ statusCode: 404, message: "No comments found" });
