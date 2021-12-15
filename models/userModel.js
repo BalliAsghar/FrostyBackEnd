@@ -75,7 +75,10 @@ exports.insertUser = async (body, files) => {
 
 exports.fetchUser = async (username) => {
   try {
-    const user = await User.findOne({ username: username }).exec();
+    const user = await User.findOne({ username: username })
+      .populate("attendedEvents", "eventId title description eventImage")
+      .populate("hostedEvents", "eventId title description eventImage")
+      .exec();
 
     if (!user) {
       return Promise.reject({ statusCode: 404, message: "User not found" });
