@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 
 const EventSchema = mongoose.Schema({
+  // create eventId to generate mongoose ObjectId
   eventId: {
     type: mongoose.Schema.Types.ObjectId,
-    default: mongoose.Types.ObjectId(),
+    unique: true,
+    default: mongoose.Types.ObjectId,
   },
   title: { type: String, required: true },
   description: { type: String },

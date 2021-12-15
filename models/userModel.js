@@ -211,7 +211,7 @@ exports.getUserProfile = async (id) => {
       )
       .populate(
         "hostedEvents",
-        "eventId title description eventImage eventStart eventEnd category"
+        "eventId title description eventImage eventStart eventEnd category "
       )
       .exec();
 
