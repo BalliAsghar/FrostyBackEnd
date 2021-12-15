@@ -13,8 +13,8 @@ const EventSchema = mongoose.Schema({
   location: {
     name: { type: String },
     description: { type: String },
-    lat: { type: Number },
-    lng: { type: Number },
+    latitude: { type: Number },
+    longitude: { type: Number },
   },
   eventImage: { type: String },
   eventPhotos: [{ type: String }],
