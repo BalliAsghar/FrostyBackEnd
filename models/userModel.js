@@ -80,10 +80,25 @@ exports.fetchUser = async (username) => {
         "attendedEvents",
         "eventId title description eventImage eventStart eventEnd category"
       )
+      .populate({
+        path: "attendedEvents",
+        populate: {
+          path: "creator",
+          select: "username displayName avatarUrl",
+        },
+      })
       .populate(
         "hostedEvents",
-        "eventId title description eventImage eventStart eventEnd category"
+        "eventId title description eventImage eventStart eventEnd category "
       )
+      .populate({
+        path: "hostedEvents",
+        populate: {
+          path: "creator",
+          select: "username displayName avatarUrl",
+        },
+      })
+
       .exec();
 
     if (!user) {
@@ -209,10 +224,25 @@ exports.getUserProfile = async (id) => {
         "attendedEvents",
         "eventId title description eventImage eventStart eventEnd category"
       )
+      .populate({
+        path: "attendedEvents",
+        populate: {
+          path: "creator",
+          select: "username displayName avatarUrl",
+        },
+      })
       .populate(
         "hostedEvents",
         "eventId title description eventImage eventStart eventEnd category "
       )
+      .populate({
+        path: "hostedEvents",
+        populate: {
+          path: "creator",
+          select: "username displayName avatarUrl",
+        },
+      })
+
       .exec();
 
     if (!user) {
