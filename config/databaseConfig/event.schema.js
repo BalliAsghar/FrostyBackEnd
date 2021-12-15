@@ -10,7 +10,12 @@ const EventSchema = mongoose.Schema({
   creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   eventStart: { type: String },
   eventEnd: { type: String },
-  location: { type: Number, ref: "Location" },
+  location: {
+    name: { type: String },
+    description: { type: String },
+    lat: { type: Number },
+    lng: { type: Number },
+  },
   eventImage: { type: String },
   eventPhotos: [{ type: String }],
   category: { type: String },
