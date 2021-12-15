@@ -214,7 +214,10 @@ exports.deletePerticipateInEvent = async (eventId, user) => {
       { eventId: eventId },
       { $pull: { participants: user.id } },
       { new: true }
-    );
+    )
+      .populate("creator", "displayName avatarUrl username")
+      .populate("participants", "displayName avatarUrl username")
+      .exec();
 
     return updatedEvent;
   } catch (error) {
