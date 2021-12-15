@@ -14,6 +14,7 @@ exports.fetchEvents = async (query) => {
 
     const events = await Event.find(queryObj)
       .populate("creator", "displayName avatarUrl username")
+      .populate("participants", "displayName avatarUrl username")
       .sort({ createdAt: 1 });
 
     if (events) return events;
