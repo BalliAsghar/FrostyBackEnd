@@ -76,8 +76,14 @@ exports.insertUser = async (body, files) => {
 exports.fetchUser = async (username) => {
   try {
     const user = await User.findOne({ username: username })
-      .populate("attendedEvents", "eventId title description eventImage")
-      .populate("hostedEvents", "eventId title description eventImage")
+      .populate(
+        "attendedEvents",
+        "eventId title description eventImage eventStart eventEnd"
+      )
+      .populate(
+        "hostedEvents",
+        "eventId title description eventImage eventStart eventEnd"
+      )
       .exec();
 
     if (!user) {
@@ -199,8 +205,14 @@ exports.signInUser = async (username, password) => {
 exports.getUserProfile = async (id) => {
   try {
     const user = await User.findById(id)
-      .populate("attendedEvents", "eventId title description eventImage")
-      .populate("hostedEvents", "eventId title description eventImage")
+      .populate(
+        "attendedEvents",
+        "eventId title description eventImage eventStart eventEnd"
+      )
+      .populate(
+        "hostedEvents",
+        "eventId title description eventImage eventStart eventEnd"
+      )
       .exec();
 
     if (!user) {
