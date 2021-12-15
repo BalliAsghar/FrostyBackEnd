@@ -78,11 +78,11 @@ exports.fetchUser = async (username) => {
     const user = await User.findOne({ username: username })
       .populate(
         "attendedEvents",
-        "eventId title description eventImage eventStart eventEnd"
+        "eventId title description eventImage eventStart eventEnd category"
       )
       .populate(
         "hostedEvents",
-        "eventId title description eventImage eventStart eventEnd"
+        "eventId title description eventImage eventStart eventEnd category"
       )
       .exec();
 
@@ -207,11 +207,11 @@ exports.getUserProfile = async (id) => {
     const user = await User.findById(id)
       .populate(
         "attendedEvents",
-        "eventId title description eventImage eventStart eventEnd"
+        "eventId title description eventImage eventStart eventEnd category"
       )
       .populate(
         "hostedEvents",
-        "eventId title description eventImage eventStart eventEnd"
+        "eventId title description eventImage eventStart eventEnd category"
       )
       .exec();
 
