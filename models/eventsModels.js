@@ -29,8 +29,8 @@ exports.insertEvent = async (body, files, user) => {
   try {
     console.log(body);
     // check if body have all the required fields
-    const { title, description, eventStart, eventEnd } = body;
-    if (!title || !description || !eventStart || !eventEnd) {
+    const { title, description, eventStart, eventEnd, location } = body;
+    if (!title || !description || !eventStart || !eventEnd || !location) {
       return Promise.reject({
         statusCode: 400,
         message: "Please provide all the required fields",
