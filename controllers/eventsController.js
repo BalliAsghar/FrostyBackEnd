@@ -3,43 +3,102 @@ const {
   insertEvent,
   fetchEvent,
   removeEvent,
+  updateEvent,
+  perticipateInEvent,
+  deletePerticipateInEvent,
 } = require("../models/eventsModels");
-exports.getEvents = async (req, res) => {
+const { fetchEventComments } = require("../models/commentsModel");
+
+exports.getEvents = async (req, res, next) => {
   try {
-    const response = await fetchEvents();
-    console.log(response);
-  } catch {
-    console.log("error");
+    const query = req.query;
+    const events = await fetchEvents(query);
+    res.status(200).json({ events });
+  } catch (err) {
+    next(err);
   }
 };
 
-exports.postEvent = async (req, res) => {
+exports.postEvent = async (req, res, next) => {
   const { body } = req;
   try {
-    const response = await insertEvent(body);
-    console.log(response);
-  } catch {
-    console.log("error in controller");
-  }
-};
-
-exports.getEvent = async (req, res) => {
-  const { event_id } = req.params;
-  try {
-    const response = await fetchEvent(event_id);
-    console.log(response);
-  } catch {
-    console.log("error");
-  }
-};
-
-exports.deleteEvent = async (req, res) => {
-  const { event_id } = req.params;
-  console.log("event id:", event_id);
-  try {
-    const response = await removeEvent(event_id);
-    console.log(response);
+    const response = await insertEvent(body, req.files, req.user);
+    res.status(201).json(response);
   } catch (err) {
-    console.log(err);
+    next(err);
+  }
+};
+
+exports.getEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  try {
+    const Event = await fetchEvent(eventId);
+    res.status(200).json({ Event });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteEvent = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const response = await removeEvent(eventId, req.user);
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getEventComments = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const comments = await fetchEventComments(eventId);
+    res.status(200).json({ comments });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.postCommentToEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { body } = req;
+  try {
+    const comment = await insertCommentToEvent(eventId, body);
+    res.status(201).json({ comment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.patchEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { body } = req;
+  try {
+    const updatedEvent = await updateEvent(eventId, body, req.user, req.files);
+    res.status(200).json({ updatedEvent });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.perticipateEvent = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { user } = req;
+  try {
+    const event = await perticipateInEvent(eventId, user);
+    res.status(200).json({ event });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deletePerticipate = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { user } = req;
+  try {
+    const event = await deletePerticipateInEvent(eventId, user);
+    res.status(200).json({ event });
+  } catch (error) {
+    next(error);
   }
 };

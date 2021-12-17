@@ -1,9 +1,23 @@
-const { fetchCategories } = require("../models/categoriesModels");
-exports.getCategories = async (req, res) => {
+const {
+  fetchCategories,
+  fetchCategoryById,
+} = require("../models/categoriesModels");
+
+exports.getCategories = async (req, res, next) => {
   try {
-    const response = await fetchCategories();
-    console.log(response);
-  } catch {
-    console.log("error in controller");
+    const categories = await fetchCategories();
+    res.status(200).send({ categories });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCategoryById = async (req, res, next) => {
+  try {
+    const { categoryId } = req.params;
+    const category = await fetchCategoryById(categoryId);
+    res.status(200).send({ category });
+  } catch (err) {
+    next(err);
   }
 };

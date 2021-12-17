@@ -1,27 +1,29 @@
 const mongoose = require("mongoose");
 
 const EventSchema = mongoose.Schema({
-  title: { type: String },
-  description: { type: String },
-  creatorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  eventDateTime: {
-    eventStart: { type: String },
-    eventEnd: { type: String },
+  // create eventId to generate mongoose ObjectId
+  eventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    unique: true,
+    default: mongoose.Types.ObjectId,
   },
+  title: { type: String, required: true },
+  description: { type: String },
+  creator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  eventStart: { type: String },
+  eventEnd: { type: String },
   location: {
-    longitude: {
-      type: Number,
-    },
-    latitude: {
-      type: Number,
-    },
     name: { type: String },
     description: { type: String },
+    latitude: { type: Number },
+    longitude: { type: Number },
   },
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Category" }],
-  tags: [{ type: String }],
+  eventImage: { type: String },
+  eventPhotos: [{ type: String }],
+  category: { type: String },
   dateCreated: { type: Date, default: Date.now },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   comment_count: { type: Number },
 });
 
